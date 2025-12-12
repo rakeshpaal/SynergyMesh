@@ -553,7 +553,15 @@ class EngineRegistry:
         Error Handling:
         ---------------
         All exceptions during module loading and introspection are silently
-        caught and ignored. This ensures that:
+        caught and ignored. **No exceptions are logged at all.**
+
+        .. warning::
+           This may make debugging difficult, as any errors (e.g., syntax errors,
+           missing dependencies, or other failures) will be completely silent.
+           Unlike ``discover_engines``, which logs exceptions at DEBUG level,
+           this method does not log any errors during discovery.
+
+        This ensures that:
         - Syntax errors in modules don't crash discovery
         - Missing dependencies don't halt the process
         - Malformed modules are gracefully skipped
