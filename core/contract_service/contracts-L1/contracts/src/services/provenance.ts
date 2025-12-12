@@ -183,28 +183,34 @@ export class ProvenanceService {
     if (path.isAbsolute(subjectPath)) {
       // For absolute paths, validate against allowed prefixes (security check)
       resolvedPath = path.normalize(subjectPath);
+      // Canonicalize the path to resolve symlinks
+      const canonicalPath = await realpath(resolvedPath);
       const isAllowed = ALLOWED_ABSOLUTE_PREFIXES.some(prefix => 
-        resolvedPath.startsWith(prefix + path.sep) || resolvedPath === prefix
+        canonicalPath.startsWith(prefix + path.sep) || canonicalPath === prefix
       );
       if (!isAllowed) {
         throw new Error('Invalid file path: Absolute paths must be within allowed directories.');
       }
+      resolvedPath = canonicalPath;
     } else {
       // For relative paths, resolve against SAFE_ROOT
       resolvedPath = path.resolve(SAFE_ROOT, subjectPath);
+      // Canonicalize the path to resolve symlinks
+      const canonicalPath = await realpath(resolvedPath);
       // Ensure the resolved path is within SAFE_ROOT
-      if (!(resolvedPath === SAFE_ROOT || resolvedPath.startsWith(SAFE_ROOT + path.sep))) {
+      if (!(canonicalPath === SAFE_ROOT || canonicalPath.startsWith(SAFE_ROOT + path.sep))) {
         throw new Error('Invalid file path: Access outside of allowed directory is not permitted.');
       }
+      resolvedPath = canonicalPath;
     }
     const stats = await stat(resolvedPath);
     if (!stats.isFile()) {
       throw new Error(`Subject path must be a file: ${subjectPath}`);
     }
 
-    const content = await readFile(validatedPath);
+    const content = await readFile(resolvedPath);
     const subject = this.slsaService.createSubjectFromContent(
-      path.relative(process.cwd(), validatedPath),
+      path.relative(process.cwd(), resolvedPath),
       content
     );
 
