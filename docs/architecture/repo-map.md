@@ -26,7 +26,7 @@
 | 分類 | 主要目錄 (僅列核心) | 備註 |
 | --- | --- | --- |
 | 核心平台 | `core/`, `runtime/`, `shared/` | AI 決策、整合層、運行時、共用資源 |
-| 自動化 | `automation/`, `pipelines/` | 智能/超自動化、架構骨架、零觸部署 |
+| 自動化 | `automation/` | 智能/超自動化、架構骨架、零觸部署（含 `automation/pipelines/` 子模組） |
 | 自主/無人 | `autonomous/`, `v1-python-drones/`, `v2-multi-islands/` | 無人機與多島嶼框架 |
 | 服務/代理 | `services/`, `agent/`, `mcp-servers/` | 長生命週期代理、MCP 工具端點 |
 | 前端/應用 | `frontend/`, `apps/` | UI 套件與 Web 應用 |
@@ -36,7 +36,7 @@
 | 文檔 | `docs/`, `knowledge/` | 文件、索引、報告；生成文件集中於 `docs/generated/` |
 | 其他歷史資產 | `legacy/`, `experiments/`, `supply-chain/`, `bridges/` | 歷史遺留與橋接實驗 |
 
-> ⚠️ 如需完整樹狀結構，請參考已存在的 `docs/DIRECTORY_TREE.md`；若需語義對應與治理邊界，請依此文檔與 `config/system-module-map.yaml`。
+> ⚠️ 如需完整樹狀結構（含檔案層級），請參考已存在的 `docs/DIRECTORY_TREE.md`；若需語義對應與治理邊界，請依此文檔與 `config/system-module-map.yaml`。
 
 ---
 
