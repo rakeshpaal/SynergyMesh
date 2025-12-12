@@ -178,9 +178,9 @@ export class ProvenanceService {
       throw new Error(`Subject path must be a file: ${subjectPath}`);
     }
 
-    const content = await readFile(validatedPath);
+    const content = await readFile(resolvedPath);
     const subject = this.slsaService.createSubjectFromContent(
-      path.relative(process.cwd(), validatedPath),
+      path.relative(process.cwd(), resolvedPath),
       content
     );
 
