@@ -83,18 +83,35 @@ class ExtremeProblemIdentifier:
         self.stats = defaultdict(int)
         
     def log(self, message: str, level: str = "info"):
-        """Log message with color"""
+        """Log message with color. Redacts obvious secrets in logs."""
+        def redact_sensitive(msg: str) -> str:
+            # Remove common possible secret substrings (passwords/keys/tokens) from msg (rudimentary)
+            patterns = [
+                r'(password\s*=\s*)(["\']?)[^"\',]+(\2)',
+                r'(api[_-]?key\s*=\s*)(["\']?)[^"\',]+(\2)',
+                r'(secret\s*=\s*)(["\']?)[^"\',]+(\2)',
+                r'(token\s*=\s*)(["\']?)[^"\',]+(\2)',
+            ]
+            redacted = msg
+            for p in patterns:
+                redacted = re.sub(p, r'\1***\3', redacted, flags=re.IGNORECASE)
+            return redacted
+
+        redacted_message = redact_sensitive(message)
         if level == "critical":
-            print(f"{Colors.FAIL}🔴 CRITICAL: {message}{Colors.ENDC}")
+            print(f"{Colors.FAIL}🔴 CRITICAL: {redacted_message}{Colors.ENDC}")
         elif level == "error":
-            print(f"{Colors.FAIL}❌ HIGH: {message}{Colors.ENDC}")
+            print(f"{Colors.FAIL}❌ HIGH: {redacted_message}{Colors.ENDC}")
         elif level == "warning":
-            print(f"{Colors.WARNING}⚠️  MEDIUM: {message}{Colors.ENDC}")
+            print(f"{Colors.WARNING}⚠️  MEDIUM: {redacted_message}{Colors.ENDC}")
         elif level == "info":
             if self.verbose:
-                print(f"{Colors.OKBLUE}ℹ️  INFO: {message}{Colors.ENDC}")
+                print(f"{Colors.OKBLUE}ℹ️  INFO: {redacted_message}{Colors.ENDC}")
         elif level == "success":
-            print(f"{Colors.OKGREEN}✅ {message}{Colors.ENDC}")
+            # Only print success if message does not look like a security warning or secret
+            lowered = redacted_message.lower()
+            if all(s not in lowered for s in ["password", "api key", "secret", "token"]):
+                print(f"{Colors.OKGREEN}✅ {redacted_message}{Colors.ENDC}")
     
     def add_problem(self, problem: Problem):
         """Add identified problem"""
