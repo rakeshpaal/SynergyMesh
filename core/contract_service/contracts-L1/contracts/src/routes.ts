@@ -39,7 +39,23 @@ import { SLSAController } from './controllers/slsa';
 /** Express router instance for all API routes */
 const router: RouterType = Router();
 
-// Configure rate limiter: max 100 requests per 15 minutes per IP
+/**
+ * Configure rate limiter middleware.
+ *
+ * Limits each IP address to a maximum of 100 requests per 15-minute window.
+ *
+ * Rationale:
+ * - The limit of 100 requests per 15 minutes is intended to balance normal user activity
+ *   with protection against abuse (e.g., brute-force or denial-of-service attacks).
+ * - These values are a starting point and may need adjustment based on observed traffic
+ *   patterns, deployment environment, or specific API usage requirements.
+ *
+ * Behavior:
+ * - When a client exceeds the limit, the server responds with HTTP 429 (Too Many Requests).
+ * - Standard rate limit headers are included in the response to inform clients of their status.
+ *
+ * To change the rate limiting policy, modify the `max` and `windowMs` values below.
+ */
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
