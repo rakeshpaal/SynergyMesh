@@ -65,7 +65,11 @@ def safe_load_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     with path.open("r", encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
+        try:
+            return yaml.safe_load(f) or {}
+        except yaml.YAMLError:
+            # Keep the pipeline resilient when YAML is malformed.
+            return {}
 
 
 def load_json(path: Path) -> dict[str, Any]:
