@@ -25,43 +25,52 @@ jobs:
 
       - name: Install governance tool dependencies
         run: |
-          if [ ! -f "$GOVERNANCE_SCRIPTS_PATH/package.json" ]; then
-            echo "$GOVERNANCE_SCRIPTS_PATH/package.json not found, skipping install."
+          if [ ! -f "${GOVERNANCE_SCRIPTS_PATH}/package.json" ]; then
+            echo "::notice::${GOVERNANCE_SCRIPTS_PATH}/package.json not found; governance tooling not installed and will be skipped. If this is unexpected, add the scripts workspace."
             exit 0
           fi
           npm install --prefix "$GOVERNANCE_SCRIPTS_PATH"
 
       - name: Run governance tool
+        id: run-governance
         continue-on-error: true
         env:
           WORKFLOW_NAME: "GitHub CI Trigger"
           COMMIT_SHA: ${{ github.sha }}
-          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '0' }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          if [ ! -d "$GOVERNANCE_SCRIPTS_PATH" ]; then
-            echo "::warning::Governance scripts path $GOVERNANCE_SCRIPTS_PATH not found; skipping governance tooling."
+          if [ ! -d "${GOVERNANCE_SCRIPTS_PATH}" ]; then
+            echo "::warning::Governance scripts path ${GOVERNANCE_SCRIPTS_PATH} not found; skipping governance tooling."
             exit 0
           fi
+
+          for var in "$WORKFLOW_NAME" "${{ github.run_id }}" "$COMMIT_SHA" "$BRANCH_NAME" "$PR_NUMBER"; do
+            if [[ "$var" == *$'\n'* ]] || [[ "$var" == *\"* ]]; then
+              echo "::error::Governance argument contains a newline or quote, aborting for safety."
+              exit 0
+            fi
+          done
 
           GOVERNANCE_STATUS="success"
           # Validate that argument values do not contain problematic characters
           for var in "$WORKFLOW_NAME" "${{ github.run_id }}" "$COMMIT_SHA" "$BRANCH_NAME" "$PR_NUMBER"; do
             if [[ "$var" == *$'\n'* ]] || [[ "$var" == *\"* ]]; then
               echo "::error::Governance argument contains a newline or quote, aborting for safety."
-              exit 1
+              exit 0
             fi
           done
           SCRIPT_ARGS=(
-            --workflow $WORKFLOW_NAME
-            --run-id ${{ github.run_id }}
-            --commit $COMMIT_SHA
-            --branch $BRANCH_NAME
-            --pr-number $PR_NUMBER
+            --workflow "${WORKFLOW_NAME}"
+            --run-id "${{ github.run_id }}"
+            --commit "${COMMIT_SHA}"
+            --branch "${BRANCH_NAME}"
+            --pr-number "${PR_NUMBER}"
           )
 
-          npm exec --prefix "$GOVERNANCE_SCRIPTS_PATH" ts-node "$GOVERNANCE_SCRIPTS_PATH/generate-comment.ts" -- "${SCRIPT_ARGS[@]}" || {
-              echo "generate-comment script failed; continuing. Script: $GOVERNANCE_SCRIPTS_PATH/generate-comment.ts Args: ${SCRIPT_ARGS[*]}. See above for log output.";
+          npm exec --prefix "$GOVERNANCE_SCRIPTS_PATH" ts-node \
+            "$GOVERNANCE_SCRIPTS_PATH/generate-comment.ts" -- "${SCRIPT_ARGS[@]}" || {
+              echo "generate-comment script failed; continuing. Script: ${GOVERNANCE_SCRIPTS_PATH}/generate-comment.ts Args: ${SCRIPT_ARGS[*]}. See log output above.";
               GOVERNANCE_STATUS="failed";
             }
 
@@ -72,8 +81,9 @@ jobs:
             --commit "${COMMIT_SHA}" \
             --branch "${BRANCH_NAME}" \
             --pr-number "${PR_NUMBER}" || {
-              echo "update-registry script failed; continuing";
+              echo "update-registry script failed; continuing. Script: ${GOVERNANCE_SCRIPTS_PATH}/update-registry.js";
               GOVERNANCE_STATUS="failed";
             }
 
           echo "Governance tooling completed with status: $GOVERNANCE_STATUS"
+          echo "status=$GOVERNANCE_STATUS" >> "$GITHUB_OUTPUT"
