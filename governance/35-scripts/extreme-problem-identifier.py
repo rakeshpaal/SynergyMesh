@@ -101,12 +101,13 @@ class ExtremeProblemIdentifier:
             for p in patterns:
                 redacted = re.sub(p, r'\1***', redacted, flags=re.IGNORECASE)
             return redacted
-        
+
         # Suppress logging if the message contains indications of sensitive value exposure
         sensitive_indicative = ["hardcoded password", "hardcoded api key", "hardcoded secret", "hardcoded token"]
         lowered_message = message.lower()
-        # If log message contains a typical secret alert phrase, log a generic message only
+        # Suppress/generic log for all log levels if the message matches secret-detection phrases (applies BEFORE all prints)
         if any(ph in lowered_message for ph in sensitive_indicative):
+            # Always print a generic message, never include details
             print(f"{Colors.FAIL}❌ HIGH: Sensitive secret detected at specified location. (details not shown for security){Colors.ENDC}")
             return
 
@@ -121,12 +122,12 @@ class ExtremeProblemIdentifier:
             if self.verbose:
                 print(f"{Colors.OKBLUE}ℹ️  INFO: {redacted_message}{Colors.ENDC}")
         elif level == "success":
-            # Suppress all logs at success level containing secret-indicative words to prevent information disclosure
+            # Suppress all logs containing secret-indicative words at the "success" level to prevent information disclosure
             lowered = redacted_message.lower()
             if any(s in lowered for s in ["password", "api key", "secret", "token"]):
                 return  # Do not log if message contains secret-indicative keywords
             print(f"{Colors.OKGREEN}✅ {redacted_message}{Colors.ENDC}")
-    
+
     def add_problem(self, problem: Problem):
         """Add identified problem"""
         self.problems.append(problem)
