@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'crypto';
 import { readFile, stat, realpath } from 'fs/promises';
 import { tmpdir } from 'os';
 import * as path from 'path';
+import sanitize from 'sanitize-filename';
 
 import { PathValidator } from '../utils/path-validator';
 
@@ -65,15 +66,37 @@ async function validateAndNormalizePath(
     throw new Error('Invalid file path: Path must be a non-empty string');
   }
 
+  // (A) --- Enforce that filePath must NOT contain directory traversal characters unless you explicitly intend to permit directories.
+  // If only filenames are expected (no subdirectories), strip dangerous chars and reject if not safe:
+  // const sanitized = sanitize(filePath);
+  // if (sanitized !== filePath) {
+  //   throw new Error('Invalid file path: Only simple filenames are allowed.');
+  // }
+
+  // If you need multi-directory paths, reject obvious traversal
+  if (
+    filePath.includes('\0') ||
+    filePath.includes('..') ||
+    filePath.includes('//') ||
+    path.isAbsolute(filePath)
+  ) {
+    throw new Error('Invalid file path: Directory traversal or absolute paths are not permitted.');
+  }
+
   const systemTmpDir = tmpdir();
   const resolvedPath = resolveFilePath(filePath, safeRoot, systemTmpDir);
 
   try {
     const canonicalPath = await realpath(resolvedPath);
 
+    // FINAL GUARD: Path must start with SAFE_ROOT or allowed test directory, comparing canonical (real) paths
     if (isInTestTmpDir(canonicalPath, systemTmpDir)) {
+      if (!isPathContained(canonicalPath, systemTmpDir)) {
+        throw new Error('Invalid file path: Access outside of allowed directory is not permitted');
+      }
       return canonicalPath;
     }
+    // Fallback for non-existent file, use normalized path and re-check boundaries
 
     if (!isPathContained(canonicalPath, safeRoot)) {
       throw new Error('Invalid file path: Access outside of allowed directory is not permitted');
