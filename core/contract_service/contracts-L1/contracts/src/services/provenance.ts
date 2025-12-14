@@ -21,7 +21,14 @@ const SAFE_ROOT =
  */
 function isPathContained(targetPath: string, rootPath: string): boolean {
   const relative = path.relative(rootPath, targetPath);
-  return !relative.startsWith('..') && !path.isAbsolute(relative);
+  // Ensure the canonical path is inside the root directory or equals the root
+  return (
+    relative === '' // filePath equals the root
+    || (
+      // filePath is a descendant of root
+      !relative.startsWith('..') && !path.isAbsolute(relative)
+    )
+  );
 }
 
 /**
@@ -91,15 +98,15 @@ async function validateAndNormalizePath(
     const canonicalPath = await realpath(resolvedPath);
 
     // Verify canonical path is within allowed boundaries
-    if (isInTestTmpDir(canonicalPath, systemTmpDir)) {
+    // Always enforce path containment within either the test temp dir or safe root
+    if (
+      (process.env.NODE_ENV === 'test' && isInTestTmpDir(canonicalPath, systemTmpDir))
+      || isPathContained(canonicalPath, safeRoot)
+    ) {
       return canonicalPath;
     }
 
-    if (!isPathContained(canonicalPath, safeRoot)) {
-      throw new Error('Invalid file path: Access outside of allowed directory is not permitted');
-    }
-
-    return canonicalPath;
+    throw new Error('Invalid file path: Access outside of allowed directory is not permitted');
   } catch (error) {
     // Fallback for non-existent file: Event-driven structure completion mechanism
     // This triggers the self-healing system to attempt structure recovery
