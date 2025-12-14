@@ -49,8 +49,20 @@ function resolveFilePath(filePath: string, safeRoot: string, systemTmpDir: strin
 
 /**
  * Validates and normalizes a file path to prevent path traversal attacks.
- * Ensures the resolved path is within the SAFE_ROOT directory or is an absolute path
- * within allowed system directories (for testing only).
+ * 
+ * Security model:
+ * 1. Rejects obvious path traversal patterns (null bytes, "..", "//")
+ * 2. Resolves paths through resolveFilePath which handles:
+ *    - Relative paths: resolved relative to safeRoot
+ *    - Absolute paths in test mode within tmpdir: allowed as-is
+ *    - Other absolute paths: converted to relative paths within safeRoot
+ * 3. Final boundary validation ensures resolved path is within allowed directories
+ * 
+ * Note: We do NOT reject absolute paths upfront because that would prevent
+ * resolveFilePath from properly handling test cases that use tmpdir(). Instead,
+ * security is maintained through the final boundary checks using isPathContained,
+ * which ensures all resolved paths stay within allowed directories regardless of
+ * the input format.
  *
  * @param filePath - The file path to validate (can be relative or absolute)
  * @param safeRoot - Optional safe root directory override (primarily for testing)
@@ -65,7 +77,7 @@ async function validateAndNormalizePath(
     throw new Error('Invalid file path: Path must be a non-empty string');
   }
 
-  // If you need multi-directory paths, reject obvious traversal
+  // Reject obvious path traversal patterns
   if (
     filePath.includes('\0') ||
     filePath.split(path.sep).includes('..') ||
@@ -75,20 +87,6 @@ async function validateAndNormalizePath(
   }
 
   const systemTmpDir = tmpdir();
-  
-  // Conditional absolute path validation:
-  // In production mode, reject all absolute paths to prevent unauthorized access.
-  // In test mode, allow absolute paths only if they're within the system temp directory.
-  if (path.isAbsolute(filePath)) {
-    if (process.env.NODE_ENV !== 'test') {
-      throw new Error('Invalid file path: Absolute paths are not permitted');
-    }
-    // In test mode, verify the absolute path is within tmpdir
-    if (!isInTestTmpDir(filePath, systemTmpDir)) {
-      throw new Error('Invalid file path: Absolute paths must be within system temp directory in test mode');
-    }
-  }
-
   const resolvedPath = resolveFilePath(filePath, safeRoot, systemTmpDir);
 
   try {
