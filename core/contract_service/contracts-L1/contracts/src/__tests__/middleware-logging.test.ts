@@ -11,6 +11,7 @@ describe('Logging Middleware', () => {
   let mockResponse: Partial<Response>;
   let mockNext: NextFunction;
   let consoleLogSpy: jest.SpyInstance;
+  let consoleWarnSpy: jest.SpyInstance;
   let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
@@ -34,11 +35,13 @@ describe('Logging Middleware', () => {
 
     // Spy on console methods
     consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
     consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
   });
 
   afterEach(() => {
     consoleLogSpy.mockRestore();
+    consoleWarnSpy.mockRestore();
     consoleErrorSpy.mockRestore();
   });
 
@@ -200,9 +203,9 @@ describe('Logging Middleware', () => {
       loggingMiddleware(mockRequest as Request, mockResponse as Response, mockNext);
 
       if (finishCallback) {
-        consoleLogSpy.mockClear();
+        consoleWarnSpy.mockClear();
         finishCallback();
-        expect(consoleLogSpy).toHaveBeenCalled();
+        expect(consoleWarnSpy).toHaveBeenCalled();
       }
     });
 
@@ -220,9 +223,9 @@ describe('Logging Middleware', () => {
       loggingMiddleware(mockRequest as Request, mockResponse as Response, mockNext);
 
       if (finishCallback) {
-        consoleLogSpy.mockClear();
+        consoleErrorSpy.mockClear();
         finishCallback();
-        expect(consoleLogSpy).toHaveBeenCalled();
+        expect(consoleErrorSpy).toHaveBeenCalled();
       }
     });
   });

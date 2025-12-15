@@ -30,6 +30,16 @@ describe('ProvenanceService', () => {
     it('should throw error for non-existent file', async () => {
       await expect(service.generateFileDigest('/non/existent/file')).rejects.toThrow(/ENOENT/);
     });
+
+    it('should reject path traversal attempts', async () => {
+      await expect(service.generateFileDigest('/etc/passwd'))
+        .rejects.toThrow(/Path traversal detected/);
+    });
+
+    it('should reject relative path traversal attempts', async () => {
+      await expect(service.generateFileDigest('../../etc/passwd'))
+        .rejects.toThrow(/Path traversal detected/);
+    });
   });
 
   describe('createBuildAttestation', () => {
