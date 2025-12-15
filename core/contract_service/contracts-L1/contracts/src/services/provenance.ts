@@ -101,7 +101,7 @@ export class ProvenanceService {
       throw new Error(`Access to file path '${userInputPath}' (resolved as '${realAbsPath}') is not allowed - path must be strictly within ${canonicalRoot}`);
     }
 
-    return resolvedPath;
+    return realAbsPath;
   }
 
   /**
