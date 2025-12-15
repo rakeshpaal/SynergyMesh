@@ -75,7 +75,7 @@ export class ProvenanceService {
   private static getSafeRoot(): string {
     return process.env.SAFE_ROOT_PATH
       ? resolve(process.env.SAFE_ROOT_PATH)
-      : resolve(__dirname, '../../safefiles');
+      : resolve(process.cwd(), 'safefiles');
   }
 
   constructor() {
@@ -89,18 +89,20 @@ export class ProvenanceService {
   private async resolveSafePath(userInputPath: string): Promise<string> {
     const safeRoot = ProvenanceService.getSafeRoot();
     // Canonicalize SAFE_ROOT and the resolved path, and check that the path stays strictly within SAFE_ROOT.
-    const canonicalRoot = await realpath(safeRoot);
+    let canonicalRoot: string;
+    try {
+      canonicalRoot = await realpath(safeRoot);
+    } catch (err: any) {
+      throw new Error(
+        `SAFE_ROOT directory '${safeRoot}' does not exist or is invalid. Please ensure the directory exists and is accessible. Original error: ${err && err.message ? err.message : err}`
+      );
+    }
     const absPath = resolve(canonicalRoot, userInputPath);
     const realAbsPath = await realpath(absPath);
-    // Ensure the realAbsPath is strictly under canonicalRoot (not equal nor outside)
-    if (
-      realAbsPath.length <= canonicalRoot.length || // Must not be root itself
-      realAbsPath.slice(0, canonicalRoot.length) !== canonicalRoot ||
-      (realAbsPath.length > canonicalRoot.length && realAbsPath[canonicalRoot.length] !== sep)
-    ) {
-      throw new Error(
-        `Access to file path '${userInputPath}' (resolved as '${realAbsPath}') is not allowed - path must be strictly within ${canonicalRoot}`
-      );
+    // Ensure the realAbsPath is strictly under canonicalRoot using path.relative
+    const rel = relative(canonicalRoot, realAbsPath);
+    if (rel.startsWith('..') || rel === '' || rel.includes('\0')) {
+      throw new Error(`Access to file path '${userInputPath}' (resolved as '${realAbsPath}') is not allowed - path must be strictly within ${canonicalRoot}`);
     }
 
     return realAbsPath;
