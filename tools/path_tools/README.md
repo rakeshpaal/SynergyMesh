@@ -5,6 +5,7 @@
 ## 工具清單
 
 ### 1. path_scanner.py - 路徑掃描器
+
 掃描專案目錄，識別所有檔案路徑並生成索引。
 
 ```bash
@@ -13,6 +14,7 @@ python tools/path_tools/path_scanner.py --target ./src --output scan_result.json
 ```
 
 ### 2. path_validator.py - 路徑驗證器
+
 驗證路徑的有效性，檢測斷開的連結、無效引用等問題。
 
 ```bash
@@ -21,6 +23,7 @@ python tools/path_tools/path_validator.py --full --target ./project
 ```
 
 ### 3. path_fixer.py - 路徑修復器
+
 自動修復常見的路徑問題，如斷開連結、錯誤引用等。
 
 ```bash
