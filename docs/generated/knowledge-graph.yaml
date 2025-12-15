@@ -3,7 +3,7 @@ version: 1.0.0
 id: unmanned-island-knowledge-graph
 title: Unmanned Island System Knowledge Graph
 description: Knowledge graph representation of the repository structure and entities
-generated_at: '2025-12-12T15:17:52.195961Z'
+generated_at: '2025-12-15T00:28:44.853161Z'
 source_repo: .
 nodes:
 - id: system:unmanned-island
@@ -412,12 +412,6 @@ nodes:
   path: apps/web-backend/analyzers
   properties:
     label_zh: 目錄
-- id: dir:apps:_scratch
-  type: directory
-  label: _scratch
-  path: apps/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root
   type: directory
   label: _codeql_detected_source_root
@@ -638,12 +632,6 @@ nodes:
   type: directory
   label: web-backend
   path: _codeql_detected_source_root/apps/web-backend
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:apps:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/apps/_scratch
   properties:
     label_zh: 目錄
 - id: dir:_codeql_detected_source_root:_codeql_detected_source_root
@@ -958,12 +946,6 @@ nodes:
   path: _codeql_detected_source_root/services/mcp
   properties:
     label_zh: 目錄
-- id: dir:_codeql_detected_source_root:services:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/services/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:services:agents
   type: directory
   label: agents
@@ -1180,12 +1162,6 @@ nodes:
   path: _codeql_detected_source_root/tools/cli
   properties:
     label_zh: 目錄
-- id: dir:_codeql_detected_source_root:tools:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/tools/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:tools:utilities
   type: directory
   label: utilities
@@ -1378,12 +1354,6 @@ nodes:
   path: _codeql_detected_source_root/automation/self_awareness_report.py
   properties:
     label_zh: 模組
-- id: dir:_codeql_detected_source_root:automation:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/automation/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:automation:autonomous
   type: directory
   label: autonomous
@@ -1558,12 +1528,6 @@ nodes:
   path: _codeql_detected_source_root/core
   properties:
     label_zh: 子系統
-- id: dir:_codeql_detected_source_root:core:main_system
-  type: directory
-  label: main_system
-  path: _codeql_detected_source_root/core/main_system
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:core:slsa_provenance
   type: directory
   label: slsa_provenance
@@ -1576,40 +1540,10 @@ nodes:
   path: _codeql_detected_source_root/core/project_factory
   properties:
     label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:training_system
-  type: directory
-  label: training_system
-  path: _codeql_detected_source_root/core/training_system
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:mcp_servers_enhanced
-  type: directory
-  label: mcp_servers_enhanced
-  path: _codeql_detected_source_root/core/mcp_servers_enhanced
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:tech_stack
-  type: directory
-  label: tech_stack
-  path: _codeql_detected_source_root/core/tech_stack
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:core:validators
   type: directory
   label: validators
   path: _codeql_detected_source_root/core/validators
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:yaml_module_system
-  type: directory
-  label: yaml_module_system
-  path: _codeql_detected_source_root/core/yaml_module_system
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:execution_architecture
-  type: directory
-  label: execution_architecture
-  path: _codeql_detected_source_root/core/execution_architecture
   properties:
     label_zh: 目錄
 - id: file:_codeql_detected_source_root:core:plugin_system.py
@@ -1634,24 +1568,6 @@ nodes:
   type: directory
   label: hlp_executor
   path: _codeql_detected_source_root/core/hlp_executor
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:monitoring_system
-  type: directory
-  label: monitoring_system
-  path: _codeql_detected_source_root/core/monitoring_system
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:cloud_agent_delegation
-  type: directory
-  label: cloud_agent_delegation
-  path: _codeql_detected_source_root/core/cloud_agent_delegation
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/core/_scratch
   properties:
     label_zh: 目錄
 - id: file:_codeql_detected_source_root:core:auto_governance_hub.py
@@ -1684,36 +1600,12 @@ nodes:
   path: _codeql_detected_source_root/core/hallucination_detector.py
   properties:
     label_zh: 模組
-- id: dir:_codeql_detected_source_root:core:ci_error_handler
-  type: directory
-  label: ci_error_handler
-  path: _codeql_detected_source_root/core/ci_error_handler
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:virtual_experts
-  type: directory
-  label: virtual_experts
-  path: _codeql_detected_source_root/core/virtual_experts
-  properties:
-    label_zh: 目錄
 - id: file:_codeql_detected_source_root:core:ai_decision_engine.py
   type: module
   label: ai_decision_engine.py
   path: _codeql_detected_source_root/core/ai_decision_engine.py
   properties:
     label_zh: 模組
-- id: dir:_codeql_detected_source_root:core:ai_constitution
-  type: directory
-  label: ai_constitution
-  path: _codeql_detected_source_root/core/ai_constitution
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:core:execution_engine
-  type: directory
-  label: execution_engine
-  path: _codeql_detected_source_root/core/execution_engine
-  properties:
-    label_zh: 目錄
 - id: file:_codeql_detected_source_root:core:context_understanding_engine.py
   type: module
   label: context_understanding_engine.py
@@ -1798,6 +1690,12 @@ nodes:
   path: _codeql_detected_source_root/governance/PHASE5_STATE.yaml
   properties:
     label_zh: 設定
+- id: dir:_codeql_detected_source_root:governance:policies
+  type: directory
+  label: policies
+  path: _codeql_detected_source_root/governance/policies
+  properties:
+    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:governance:10-policy
   type: directory
   label: 10-policy
@@ -1822,16 +1720,16 @@ nodes:
   path: _codeql_detected_source_root/governance/14-improvement
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:governance:debt_auto_fix.py
-  type: module
-  label: debt_auto_fix.py
-  path: _codeql_detected_source_root/governance/debt_auto_fix.py
-  properties:
-    label_zh: 模組
-- id: dir:_codeql_detected_source_root:governance:examples
+- id: dir:_codeql_detected_source_root:governance:20-information
   type: directory
-  label: examples
-  path: _codeql_detected_source_root/governance/examples
+  label: 20-information
+  path: _codeql_detected_source_root/governance/20-information
+  properties:
+    label_zh: 目錄
+- id: dir:_codeql_detected_source_root:governance:30-integration
+  type: directory
+  label: 30-integration
+  path: _codeql_detected_source_root/governance/30-integration
   properties:
     label_zh: 目錄
 - id: file:_codeql_detected_source_root:governance:setup.py
@@ -1880,6 +1778,12 @@ nodes:
   type: directory
   label: 28-tests
   path: _codeql_detected_source_root/governance/28-tests
+  properties:
+    label_zh: 目錄
+- id: dir:_codeql_detected_source_root:governance:scripts
+  type: directory
+  label: scripts
+  path: _codeql_detected_source_root/governance/scripts
   properties:
     label_zh: 目錄
 - id: dir:_codeql_detected_source_root:governance:12-culture-capability
@@ -1966,12 +1870,6 @@ nodes:
   path: _codeql_detected_source_root/governance/17-sociological
   properties:
     label_zh: 目錄
-- id: dir:_codeql_detected_source_root:governance:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/governance/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:governance:22-aesthetic
   type: directory
   label: 22-aesthetic
@@ -1996,18 +1894,6 @@ nodes:
   path: _codeql_detected_source_root/governance/29-docs
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:governance:technical_debt_manager.py
-  type: module
-  label: technical_debt_manager.py
-  path: _codeql_detected_source_root/governance/technical_debt_manager.py
-  properties:
-    label_zh: 模組
-- id: file:_codeql_detected_source_root:governance:instant_debt_resolution.py
-  type: module
-  label: instant_debt_resolution.py
-  path: _codeql_detected_source_root/governance/instant_debt_resolution.py
-  properties:
-    label_zh: 模組
 - id: dir:_codeql_detected_source_root:governance:38-sbom
   type: directory
   label: 38-sbom
@@ -2030,6 +1916,12 @@ nodes:
   type: directory
   label: 32-rules
   path: _codeql_detected_source_root/governance/32-rules
+  properties:
+    label_zh: 目錄
+- id: dir:_codeql_detected_source_root:governance:schemas
+  type: directory
+  label: schemas
+  path: _codeql_detected_source_root/governance/schemas
   properties:
     label_zh: 目錄
 - id: dir:_codeql_detected_source_root:governance:40-self-healing
@@ -2056,12 +1948,6 @@ nodes:
   path: _codeql_detected_source_root/governance/dimensions
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:governance:instant-governance-cli.py
-  type: module
-  label: instant-governance-cli.py
-  path: _codeql_detected_source_root/governance/instant-governance-cli.py
-  properties:
-    label_zh: 模組
 - id: dir:_codeql_detected_source_root:governance:packages
   type: directory
   label: packages
@@ -2086,24 +1972,12 @@ nodes:
   path: _codeql_detected_source_root/governance/34-config
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:governance:api_contract.py
-  type: module
-  label: api_contract.py
-  path: _codeql_detected_source_root/governance/api_contract.py
-  properties:
-    label_zh: 模組
 - id: dir:_codeql_detected_source_root:governance:80-feedback
   type: directory
   label: 80-feedback
   path: _codeql_detected_source_root/governance/80-feedback
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:governance:advanced_debt_restructuring.py
-  type: module
-  label: advanced_debt_restructuring.py
-  path: _codeql_detected_source_root/governance/advanced_debt_restructuring.py
-  properties:
-    label_zh: 模組
 - id: dir:_codeql_detected_source_root:governance:01-architecture
   type: directory
   label: 01-architecture
@@ -2122,6 +1996,12 @@ nodes:
   path: _codeql_detected_source_root/governance/11-tools-systems
   properties:
     label_zh: 目錄
+- id: dir:_codeql_detected_source_root:governance:10-stakeholder
+  type: directory
+  label: 10-stakeholder
+  path: _codeql_detected_source_root/governance/10-stakeholder
+  properties:
+    label_zh: 目錄
 - id: file:_codeql_detected_source_root:governance:governance.yaml
   type: config
   label: governance.yaml
@@ -2138,12 +2018,6 @@ nodes:
   type: directory
   label: 18-complex-system
   path: _codeql_detected_source_root/governance/18-complex-system
-  properties:
-    label_zh: 目錄
-- id: dir:_codeql_detected_source_root:governance:_legacy
-  type: directory
-  label: _legacy
-  path: _codeql_detected_source_root/governance/_legacy
   properties:
     label_zh: 目錄
 - id: dir:_codeql_detected_source_root:governance:39-automation
@@ -2686,12 +2560,6 @@ nodes:
   path: _codeql_detected_source_root/infra
   properties:
     label_zh: 目錄
-- id: dir:_codeql_detected_source_root:infra:_scratch
-  type: directory
-  label: _scratch
-  path: _codeql_detected_source_root/infra/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:_codeql_detected_source_root:infra:config
   type: config
   label: config
@@ -2740,12 +2608,6 @@ nodes:
   path: _codeql_detected_source_root/island-ai/examples
   properties:
     label_zh: 目錄
-- id: file:_codeql_detected_source_root:island-ai:jest.config.js
-  type: module
-  label: jest.config.js
-  path: _codeql_detected_source_root/island-ai/jest.config.js
-  properties:
-    label_zh: 模組
 - id: dir:_codeql_detected_source_root:island-ai:src
   type: directory
   label: src
@@ -2804,12 +2666,6 @@ nodes:
   type: directory
   label: deploy
   path: services/mcp/deploy
-  properties:
-    label_zh: 目錄
-- id: dir:services:_scratch
-  type: directory
-  label: _scratch
-  path: services/_scratch
   properties:
     label_zh: 目錄
 - id: dir:services:agents
@@ -3904,12 +3760,6 @@ nodes:
   path: tools/cli/src
   properties:
     label_zh: 目錄
-- id: dir:tools:_scratch
-  type: directory
-  label: _scratch
-  path: tools/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:tools:utilities
   type: directory
   label: utilities
@@ -4348,12 +4198,6 @@ nodes:
   path: automation/self_awareness_report.py
   properties:
     label_zh: 模組
-- id: dir:automation:_scratch
-  type: directory
-  label: _scratch
-  path: automation/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:automation:autonomous
   type: directory
   label: autonomous
@@ -4618,12 +4462,6 @@ nodes:
   path: docs/examples/configuration
   properties:
     label_zh: 目錄
-- id: dir:docs:examples:project-generation
-  type: directory
-  label: project-generation
-  path: docs/examples/project-generation
-  properties:
-    label_zh: 目錄
 - id: file:docs:unmanned-island.mndoc.yaml
   type: config
   label: unmanned-island.mndoc.yaml
@@ -4810,42 +4648,6 @@ nodes:
   path: core
   properties:
     label_zh: 子系統
-- id: dir:core:main_system
-  type: directory
-  label: main_system
-  path: core/main_system
-  properties:
-    label_zh: 目錄
-- id: file:core:main_system:automation_pipeline.py
-  type: module
-  label: automation_pipeline.py
-  path: core/main_system/automation_pipeline.py
-  properties:
-    label_zh: 模組
-- id: file:core:main_system:phase_orchestrator.py
-  type: module
-  label: phase_orchestrator.py
-  path: core/main_system/phase_orchestrator.py
-  properties:
-    label_zh: 模組
-- id: file:core:main_system:system_bootstrap.py
-  type: module
-  label: system_bootstrap.py
-  path: core/main_system/system_bootstrap.py
-  properties:
-    label_zh: 模組
-- id: file:core:main_system:__init__.py
-  type: module
-  label: __init__.py
-  path: core/main_system/__init__.py
-  properties:
-    label_zh: 模組
-- id: file:core:main_system:synergymesh_core.py
-  type: module
-  label: synergymesh_core.py
-  path: core/main_system/synergymesh_core.py
-  properties:
-    label_zh: 模組
 - id: dir:core:slsa_provenance
   type: directory
   label: slsa_provenance
@@ -4930,124 +4732,10 @@ nodes:
   path: core/project_factory/generator.py
   properties:
     label_zh: 模組
-- id: dir:core:project_factory:tests
-  type: module
-  label: tests
-  path: core/project_factory/tests
-  properties:
-    label_zh: 模組
 - id: file:core:project_factory:__init__.py
   type: module
   label: __init__.py
   path: core/project_factory/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:project_factory:templates
-  type: directory
-  label: templates
-  path: core/project_factory/templates
-  properties:
-    label_zh: 目錄
-- id: dir:core:training_system
-  type: directory
-  label: training_system
-  path: core/training_system
-  properties:
-    label_zh: 目錄
-- id: file:core:training_system:example_library.py
-  type: module
-  label: example_library.py
-  path: core/training_system/example_library.py
-  properties:
-    label_zh: 模組
-- id: file:core:training_system:skills_training.py
-  type: module
-  label: skills_training.py
-  path: core/training_system/skills_training.py
-  properties:
-    label_zh: 模組
-- id: file:core:training_system:__init__.py
-  type: module
-  label: __init__.py
-  path: core/training_system/__init__.py
-  properties:
-    label_zh: 模組
-- id: file:core:training_system:knowledge_base.py
-  type: module
-  label: knowledge_base.py
-  path: core/training_system/knowledge_base.py
-  properties:
-    label_zh: 模組
-- id: dir:core:mcp_servers_enhanced
-  type: directory
-  label: mcp_servers_enhanced
-  path: core/mcp_servers_enhanced
-  properties:
-    label_zh: 目錄
-- id: file:core:mcp_servers_enhanced:realtime_connector.py
-  type: module
-  label: realtime_connector.py
-  path: core/mcp_servers_enhanced/realtime_connector.py
-  properties:
-    label_zh: 模組
-- id: file:core:mcp_servers_enhanced:tool_registry.py
-  type: module
-  label: tool_registry.py
-  path: core/mcp_servers_enhanced/tool_registry.py
-  properties:
-    label_zh: 模組
-- id: file:core:mcp_servers_enhanced:workflow_orchestrator.py
-  type: module
-  label: workflow_orchestrator.py
-  path: core/mcp_servers_enhanced/workflow_orchestrator.py
-  properties:
-    label_zh: 模組
-- id: file:core:mcp_servers_enhanced:mcp_server_manager.py
-  type: module
-  label: mcp_server_manager.py
-  path: core/mcp_servers_enhanced/mcp_server_manager.py
-  properties:
-    label_zh: 模組
-- id: file:core:mcp_servers_enhanced:__init__.py
-  type: module
-  label: __init__.py
-  path: core/mcp_servers_enhanced/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:tech_stack
-  type: directory
-  label: tech_stack
-  path: core/tech_stack
-  properties:
-    label_zh: 目錄
-- id: file:core:tech_stack:multi_agent_coordinator.py
-  type: module
-  label: multi_agent_coordinator.py
-  path: core/tech_stack/multi_agent_coordinator.py
-  properties:
-    label_zh: 模組
-- id: file:core:tech_stack:python_bridge.py
-  type: module
-  label: python_bridge.py
-  path: core/tech_stack/python_bridge.py
-  properties:
-    label_zh: 模組
-- id: file:core:tech_stack:framework_integrations.py
-  type: module
-  label: framework_integrations.py
-  path: core/tech_stack/framework_integrations.py
-  properties:
-    label_zh: 模組
-- id: file:core:tech_stack:architecture_config.py
-  type: module
-  label: architecture_config.py
-  path: core/tech_stack/architecture_config.py
-  properties:
-    label_zh: 模組
-- id: file:core:tech_stack:__init__.py
-  type: module
-  label: __init__.py
-  path: core/tech_stack/__init__.py
   properties:
     label_zh: 模組
 - id: dir:core:validators
@@ -5084,96 +4772,6 @@ nodes:
   type: module
   label: __init__.py
   path: core/validators/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:yaml_module_system
-  type: directory
-  label: yaml_module_system
-  path: core/yaml_module_system
-  properties:
-    label_zh: 目錄
-- id: file:core:yaml_module_system:policy_gate.py
-  type: module
-  label: policy_gate.py
-  path: core/yaml_module_system/policy_gate.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:yaml_schema_validator.py
-  type: module
-  label: yaml_schema_validator.py
-  path: core/yaml_module_system/yaml_schema_validator.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:yaml_module_definition.py
-  type: module
-  label: yaml_module_definition.py
-  path: core/yaml_module_system/yaml_module_definition.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:ci_verification_pipeline.py
-  type: module
-  label: ci_verification_pipeline.py
-  path: core/yaml_module_system/ci_verification_pipeline.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:slsa_compliance.py
-  type: module
-  label: slsa_compliance.py
-  path: core/yaml_module_system/slsa_compliance.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:audit_trail.py
-  type: module
-  label: audit_trail.py
-  path: core/yaml_module_system/audit_trail.py
-  properties:
-    label_zh: 模組
-- id: file:core:yaml_module_system:__init__.py
-  type: module
-  label: __init__.py
-  path: core/yaml_module_system/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:execution_architecture
-  type: directory
-  label: execution_architecture
-  path: core/execution_architecture
-  properties:
-    label_zh: 目錄
-- id: file:core:execution_architecture:function_calling.py
-  type: module
-  label: function_calling.py
-  path: core/execution_architecture/function_calling.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_architecture:mcp_integration.py
-  type: module
-  label: mcp_integration.py
-  path: core/execution_architecture/mcp_integration.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_architecture:tool_system.py
-  type: module
-  label: tool_system.py
-  path: core/execution_architecture/tool_system.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_architecture:agent_orchestration.py
-  type: module
-  label: agent_orchestration.py
-  path: core/execution_architecture/agent_orchestration.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_architecture:langchain_integration.py
-  type: module
-  label: langchain_integration.py
-  path: core/execution_architecture/langchain_integration.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_architecture:__init__.py
-  type: module
-  label: __init__.py
-  path: core/execution_architecture/__init__.py
   properties:
     label_zh: 模組
 - id: file:core:plugin_system.py
@@ -5338,96 +4936,6 @@ nodes:
   path: core/hlp_executor/partial_rollback.py
   properties:
     label_zh: 模組
-- id: dir:core:monitoring_system
-  type: directory
-  label: monitoring_system
-  path: core/monitoring_system
-  properties:
-    label_zh: 目錄
-- id: file:core:monitoring_system:intelligent_monitoring.py
-  type: module
-  label: intelligent_monitoring.py
-  path: core/monitoring_system/intelligent_monitoring.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:observability_platform.py
-  type: module
-  label: observability_platform.py
-  path: core/monitoring_system/observability_platform.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:auto_remediation.py
-  type: module
-  label: auto_remediation.py
-  path: core/monitoring_system/auto_remediation.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:smart_anomaly_detector.py
-  type: module
-  label: smart_anomaly_detector.py
-  path: core/monitoring_system/smart_anomaly_detector.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:auto_diagnosis.py
-  type: module
-  label: auto_diagnosis.py
-  path: core/monitoring_system/auto_diagnosis.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:__init__.py
-  type: module
-  label: __init__.py
-  path: core/monitoring_system/__init__.py
-  properties:
-    label_zh: 模組
-- id: file:core:monitoring_system:self_learning.py
-  type: module
-  label: self_learning.py
-  path: core/monitoring_system/self_learning.py
-  properties:
-    label_zh: 模組
-- id: dir:core:cloud_agent_delegation
-  type: directory
-  label: cloud_agent_delegation
-  path: core/cloud_agent_delegation
-  properties:
-    label_zh: 目錄
-- id: file:core:cloud_agent_delegation:load_balancer.py
-  type: module
-  label: load_balancer.py
-  path: core/cloud_agent_delegation/load_balancer.py
-  properties:
-    label_zh: 模組
-- id: file:core:cloud_agent_delegation:task_router.py
-  type: module
-  label: task_router.py
-  path: core/cloud_agent_delegation/task_router.py
-  properties:
-    label_zh: 模組
-- id: file:core:cloud_agent_delegation:delegation_manager.py
-  type: module
-  label: delegation_manager.py
-  path: core/cloud_agent_delegation/delegation_manager.py
-  properties:
-    label_zh: 模組
-- id: file:core:cloud_agent_delegation:cloud_provider_adapter.py
-  type: module
-  label: cloud_provider_adapter.py
-  path: core/cloud_agent_delegation/cloud_provider_adapter.py
-  properties:
-    label_zh: 模組
-- id: file:core:cloud_agent_delegation:__init__.py
-  type: module
-  label: __init__.py
-  path: core/cloud_agent_delegation/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:_scratch
-  type: directory
-  label: _scratch
-  path: core/_scratch
-  properties:
-    label_zh: 目錄
 - id: file:core:auto_governance_hub.py
   type: module
   label: auto_governance_hub.py
@@ -5446,12 +4954,6 @@ nodes:
   path: core/advisory-database
   properties:
     label_zh: 目錄
-- id: file:core:advisory-database:jest.config.js
-  type: module
-  label: jest.config.js
-  path: core/advisory-database/jest.config.js
-  properties:
-    label_zh: 模組
 - id: dir:core:advisory-database:src
   type: directory
   label: src
@@ -5530,172 +5032,10 @@ nodes:
   path: core/hallucination_detector.py
   properties:
     label_zh: 模組
-- id: dir:core:ci_error_handler
-  type: directory
-  label: ci_error_handler
-  path: core/ci_error_handler
-  properties:
-    label_zh: 目錄
-- id: file:core:ci_error_handler:fix_status_tracker.py
-  type: module
-  label: fix_status_tracker.py
-  path: core/ci_error_handler/fix_status_tracker.py
-  properties:
-    label_zh: 模組
-- id: file:core:ci_error_handler:auto_fix_engine.py
-  type: module
-  label: auto_fix_engine.py
-  path: core/ci_error_handler/auto_fix_engine.py
-  properties:
-    label_zh: 模組
-- id: file:core:ci_error_handler:issue_manager.py
-  type: module
-  label: issue_manager.py
-  path: core/ci_error_handler/issue_manager.py
-  properties:
-    label_zh: 模組
-- id: file:core:ci_error_handler:ci_error_analyzer.py
-  type: module
-  label: ci_error_analyzer.py
-  path: core/ci_error_handler/ci_error_analyzer.py
-  properties:
-    label_zh: 模組
-- id: file:core:ci_error_handler:__init__.py
-  type: module
-  label: __init__.py
-  path: core/ci_error_handler/__init__.py
-  properties:
-    label_zh: 模組
-- id: dir:core:virtual_experts
-  type: directory
-  label: virtual_experts
-  path: core/virtual_experts
-  properties:
-    label_zh: 目錄
-- id: file:core:virtual_experts:expert_team.py
-  type: module
-  label: expert_team.py
-  path: core/virtual_experts/expert_team.py
-  properties:
-    label_zh: 模組
-- id: file:core:virtual_experts:expert_base.py
-  type: module
-  label: expert_base.py
-  path: core/virtual_experts/expert_base.py
-  properties:
-    label_zh: 模組
-- id: file:core:virtual_experts:domain_experts.py
-  type: module
-  label: domain_experts.py
-  path: core/virtual_experts/domain_experts.py
-  properties:
-    label_zh: 模組
-- id: file:core:virtual_experts:__init__.py
-  type: module
-  label: __init__.py
-  path: core/virtual_experts/__init__.py
-  properties:
-    label_zh: 模組
 - id: file:core:ai_decision_engine.py
   type: module
   label: ai_decision_engine.py
   path: core/ai_decision_engine.py
-  properties:
-    label_zh: 模組
-- id: dir:core:ai_constitution
-  type: directory
-  label: ai_constitution
-  path: core/ai_constitution
-  properties:
-    label_zh: 目錄
-- id: file:core:ai_constitution:adaptive_guidelines.py
-  type: module
-  label: adaptive_guidelines.py
-  path: core/ai_constitution/adaptive_guidelines.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:fundamental_laws.py
-  type: module
-  label: fundamental_laws.py
-  path: core/ai_constitution/fundamental_laws.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:policy_as_prompt.py
-  type: module
-  label: policy_as_prompt.py
-  path: core/ai_constitution/policy_as_prompt.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:operational_rules.py
-  type: module
-  label: operational_rules.py
-  path: core/ai_constitution/operational_rules.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:constitution_engine.py
-  type: module
-  label: constitution_engine.py
-  path: core/ai_constitution/constitution_engine.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:__init__.py
-  type: module
-  label: __init__.py
-  path: core/ai_constitution/__init__.py
-  properties:
-    label_zh: 模組
-- id: file:core:ai_constitution:guardrails.py
-  type: module
-  label: guardrails.py
-  path: core/ai_constitution/guardrails.py
-  properties:
-    label_zh: 模組
-- id: dir:core:execution_engine
-  type: directory
-  label: execution_engine
-  path: core/execution_engine
-  properties:
-    label_zh: 目錄
-- id: file:core:execution_engine:verification_engine.py
-  type: module
-  label: verification_engine.py
-  path: core/execution_engine/verification_engine.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:connector_manager.py
-  type: module
-  label: connector_manager.py
-  path: core/execution_engine/connector_manager.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:rollback_manager.py
-  type: module
-  label: rollback_manager.py
-  path: core/execution_engine/rollback_manager.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:capability_registry.py
-  type: module
-  label: capability_registry.py
-  path: core/execution_engine/capability_registry.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:action_executor.py
-  type: module
-  label: action_executor.py
-  path: core/execution_engine/action_executor.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:execution_engine.py
-  type: module
-  label: execution_engine.py
-  path: core/execution_engine/execution_engine.py
-  properties:
-    label_zh: 模組
-- id: file:core:execution_engine:__init__.py
-  type: module
-  label: __init__.py
-  path: core/execution_engine/__init__.py
   properties:
     label_zh: 模組
 - id: file:core:context_understanding_engine.py
@@ -6022,6 +5362,12 @@ nodes:
   path: governance/PHASE5_STATE.yaml
   properties:
     label_zh: 設定
+- id: dir:governance:policies
+  type: directory
+  label: policies
+  path: governance/policies
+  properties:
+    label_zh: 目錄
 - id: dir:governance:10-policy
   type: directory
   label: 10-policy
@@ -6220,24 +5566,42 @@ nodes:
   path: governance/14-improvement/__init__.py
   properties:
     label_zh: 模組
-- id: file:governance:debt_auto_fix.py
-  type: module
-  label: debt_auto_fix.py
-  path: governance/debt_auto_fix.py
-  properties:
-    label_zh: 模組
-- id: dir:governance:examples
+- id: dir:governance:20-information
   type: directory
-  label: examples
-  path: governance/examples
+  label: 20-information
+  path: governance/20-information
   properties:
     label_zh: 目錄
-- id: file:governance:examples:api_contract_example.py
+- id: file:governance:20-information:dimension.yaml
+  type: config
+  label: dimension.yaml
+  path: governance/20-information/dimension.yaml
+  properties:
+    label_zh: 設定
+- id: dir:governance:30-integration
+  type: directory
+  label: 30-integration
+  path: governance/30-integration
+  properties:
+    label_zh: 目錄
+- id: file:governance:30-integration:integration-coordinator.py
   type: module
-  label: api_contract_example.py
-  path: governance/examples/api_contract_example.py
+  label: integration-coordinator.py
+  path: governance/30-integration/integration-coordinator.py
   properties:
     label_zh: 模組
+- id: file:governance:30-integration:GOVERNANCE_DEPENDENCY_MAP.yaml
+  type: config
+  label: GOVERNANCE_DEPENDENCY_MAP.yaml
+  path: governance/30-integration/GOVERNANCE_DEPENDENCY_MAP.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:30-integration:dimension.yaml
+  type: config
+  label: dimension.yaml
+  path: governance/30-integration/dimension.yaml
+  properties:
+    label_zh: 設定
 - id: file:governance:setup.py
   type: module
   label: setup.py
@@ -6656,6 +6020,54 @@ nodes:
   type: module
   label: conftest.py
   path: governance/28-tests/conftest.py
+  properties:
+    label_zh: 模組
+- id: dir:governance:scripts
+  type: directory
+  label: scripts
+  path: governance/scripts
+  properties:
+    label_zh: 目錄
+- id: file:governance:scripts:auto-fix-medium-issues.py
+  type: module
+  label: auto-fix-medium-issues.py
+  path: governance/scripts/auto-fix-medium-issues.py
+  properties:
+    label_zh: 模組
+- id: file:governance:scripts:routing-config.yaml
+  type: config
+  label: routing-config.yaml
+  path: governance/scripts/routing-config.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:scripts:generate_dimensions.py
+  type: module
+  label: generate_dimensions.py
+  path: governance/scripts/generate_dimensions.py
+  properties:
+    label_zh: 模組
+- id: file:governance:scripts:logical-consistency-engine.py
+  type: module
+  label: logical-consistency-engine.py
+  path: governance/scripts/logical-consistency-engine.py
+  properties:
+    label_zh: 模組
+- id: file:governance:scripts:extreme-problem-identifier.py
+  type: module
+  label: extreme-problem-identifier.py
+  path: governance/scripts/extreme-problem-identifier.py
+  properties:
+    label_zh: 模組
+- id: file:governance:scripts:validate-governance-structure.py
+  type: module
+  label: validate-governance-structure.py
+  path: governance/scripts/validate-governance-structure.py
+  properties:
+    label_zh: 模組
+- id: file:governance:scripts:intelligent-file-router.py
+  type: module
+  label: intelligent-file-router.py
+  path: governance/scripts/intelligent-file-router.py
   properties:
     label_zh: 模組
 - id: dir:governance:12-culture-capability
@@ -7246,12 +6658,6 @@ nodes:
   path: governance/17-sociological/dimension.yaml
   properties:
     label_zh: 設定
-- id: dir:governance:_scratch
-  type: directory
-  label: _scratch
-  path: governance/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:governance:22-aesthetic
   type: directory
   label: 22-aesthetic
@@ -7468,18 +6874,6 @@ nodes:
   path: governance/29-docs/v2-skeleton-api-io-contract.yaml
   properties:
     label_zh: 設定
-- id: file:governance:technical_debt_manager.py
-  type: module
-  label: technical_debt_manager.py
-  path: governance/technical_debt_manager.py
-  properties:
-    label_zh: 模組
-- id: file:governance:instant_debt_resolution.py
-  type: module
-  label: instant_debt_resolution.py
-  path: governance/instant_debt_resolution.py
-  properties:
-    label_zh: 模組
 - id: dir:governance:38-sbom
   type: directory
   label: 38-sbom
@@ -7600,6 +6994,12 @@ nodes:
   path: governance/32-rules/language-policy.yml
   properties:
     label_zh: 設定
+- id: dir:governance:schemas
+  type: directory
+  label: schemas
+  path: governance/schemas
+  properties:
+    label_zh: 目錄
 - id: dir:governance:40-self-healing
   type: directory
   label: 40-self-healing
@@ -7702,64 +7102,16 @@ nodes:
   path: governance/35-scripts
   properties:
     label_zh: 目錄
-- id: file:governance:35-scripts:auto-fix-medium-issues.py
-  type: module
-  label: auto-fix-medium-issues.py
-  path: governance/35-scripts/auto-fix-medium-issues.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:routing-config.yaml
-  type: config
-  label: routing-config.yaml
-  path: governance/35-scripts/routing-config.yaml
-  properties:
-    label_zh: 設定
 - id: file:governance:35-scripts:dimension.yaml
   type: config
   label: dimension.yaml
   path: governance/35-scripts/dimension.yaml
   properties:
     label_zh: 設定
-- id: file:governance:35-scripts:generate_dimensions.py
-  type: module
-  label: generate_dimensions.py
-  path: governance/35-scripts/generate_dimensions.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:logical-consistency-engine.py
-  type: module
-  label: logical-consistency-engine.py
-  path: governance/35-scripts/logical-consistency-engine.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:instant-migration.py
-  type: module
-  label: instant-migration.py
-  path: governance/35-scripts/instant-migration.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:extreme-problem-identifier.py
-  type: module
-  label: extreme-problem-identifier.py
-  path: governance/35-scripts/extreme-problem-identifier.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:validate-governance-structure.py
-  type: module
-  label: validate-governance-structure.py
-  path: governance/35-scripts/validate-governance-structure.py
-  properties:
-    label_zh: 模組
 - id: file:governance:35-scripts:validate-python-syntax.py
   type: module
   label: validate-python-syntax.py
   path: governance/35-scripts/validate-python-syntax.py
-  properties:
-    label_zh: 模組
-- id: file:governance:35-scripts:intelligent-file-router.py
-  type: module
-  label: intelligent-file-router.py
-  path: governance/35-scripts/intelligent-file-router.py
   properties:
     label_zh: 模組
 - id: dir:governance:dimensions
@@ -8260,12 +7612,6 @@ nodes:
   path: governance/dimensions/19-evolutionary
   properties:
     label_zh: 目錄
-- id: file:governance:instant-governance-cli.py
-  type: module
-  label: instant-governance-cli.py
-  path: governance/instant-governance-cli.py
-  properties:
-    label_zh: 模組
 - id: dir:governance:packages
   type: directory
   label: packages
@@ -8416,12 +7762,6 @@ nodes:
   path: governance/34-config/logging-config.yaml
   properties:
     label_zh: 設定
-- id: file:governance:api_contract.py
-  type: module
-  label: api_contract.py
-  path: governance/api_contract.py
-  properties:
-    label_zh: 模組
 - id: dir:governance:80-feedback
   type: directory
   label: 80-feedback
@@ -8440,12 +7780,6 @@ nodes:
   path: governance/80-feedback/framework.yaml
   properties:
     label_zh: 設定
-- id: file:governance:advanced_debt_restructuring.py
-  type: module
-  label: advanced_debt_restructuring.py
-  path: governance/advanced_debt_restructuring.py
-  properties:
-    label_zh: 模組
 - id: dir:governance:01-architecture
   type: directory
   label: 01-architecture
@@ -8602,6 +7936,72 @@ nodes:
   path: governance/11-tools-systems/process-management-system.yaml
   properties:
     label_zh: 設定
+- id: dir:governance:10-stakeholder
+  type: directory
+  label: 10-stakeholder
+  path: governance/10-stakeholder
+  properties:
+    label_zh: 目錄
+- id: file:governance:10-stakeholder:automation_engine.py
+  type: module
+  label: automation_engine.py
+  path: governance/10-stakeholder/automation_engine.py
+  properties:
+    label_zh: 模組
+- id: file:governance:10-stakeholder:stakeholder-satisfaction-survey.yaml
+  type: config
+  label: stakeholder-satisfaction-survey.yaml
+  path: governance/10-stakeholder/stakeholder-satisfaction-survey.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:stakeholder-identification.yaml
+  type: config
+  label: stakeholder-identification.yaml
+  path: governance/10-stakeholder/stakeholder-identification.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:conflict-resolution-procedures.yaml
+  type: config
+  label: conflict-resolution-procedures.yaml
+  path: governance/10-stakeholder/conflict-resolution-procedures.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:dimension.yaml
+  type: config
+  label: dimension.yaml
+  path: governance/10-stakeholder/dimension.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:stakeholder-analysis.yaml
+  type: config
+  label: stakeholder-analysis.yaml
+  path: governance/10-stakeholder/stakeholder-analysis.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:stakeholder-policy.yaml
+  type: config
+  label: stakeholder-policy.yaml
+  path: governance/10-stakeholder/stakeholder-policy.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:stakeholder-engagement-plan.yaml
+  type: config
+  label: stakeholder-engagement-plan.yaml
+  path: governance/10-stakeholder/stakeholder-engagement-plan.yaml
+  properties:
+    label_zh: 設定
+- id: file:governance:10-stakeholder:__init__.py
+  type: module
+  label: __init__.py
+  path: governance/10-stakeholder/__init__.py
+  properties:
+    label_zh: 模組
+- id: file:governance:10-stakeholder:stakeholder-communication-plan.yaml
+  type: config
+  label: stakeholder-communication-plan.yaml
+  path: governance/10-stakeholder/stakeholder-communication-plan.yaml
+  properties:
+    label_zh: 設定
 - id: file:governance:governance.yaml
   type: config
   label: governance.yaml
@@ -8632,30 +8032,6 @@ nodes:
   path: governance/18-complex-system/dimension.yaml
   properties:
     label_zh: 設定
-- id: dir:governance:_legacy
-  type: directory
-  label: _legacy
-  path: governance/_legacy
-  properties:
-    label_zh: 目錄
-- id: dir:governance:_legacy:20-information
-  type: directory
-  label: 20-information
-  path: governance/_legacy/20-information
-  properties:
-    label_zh: 目錄
-- id: dir:governance:_legacy:30-integration
-  type: directory
-  label: 30-integration
-  path: governance/_legacy/30-integration
-  properties:
-    label_zh: 目錄
-- id: dir:governance:_legacy:10-stakeholder
-  type: directory
-  label: 10-stakeholder
-  path: governance/_legacy/10-stakeholder
-  properties:
-    label_zh: 目錄
 - id: dir:governance:39-automation
   type: directory
   label: 39-automation
@@ -10030,12 +9406,6 @@ nodes:
   path: infra
   properties:
     label_zh: 目錄
-- id: dir:infra:_scratch
-  type: directory
-  label: _scratch
-  path: infra/_scratch
-  properties:
-    label_zh: 目錄
 - id: dir:infra:config
   type: config
   label: config
@@ -10250,12 +9620,6 @@ nodes:
   type: module
   label: multi-agent-collaboration.ts
   path: island-ai/examples/multi-agent-collaboration.ts
-  properties:
-    label_zh: 模組
-- id: file:island-ai:jest.config.js
-  type: module
-  label: jest.config.js
-  path: island-ai/jest.config.js
   properties:
     label_zh: 模組
 - id: dir:island-ai:src
@@ -10726,9 +10090,6 @@ edges:
 - source: dir:apps:web-backend
   target: dir:apps:web-backend:analyzers
   type: contains
-- source: dir:apps
-  target: dir:apps:_scratch
-  type: contains
 - source: system:unmanned-island
   target: dir:_codeql_detected_source_root
   type: contains
@@ -10839,9 +10200,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:apps
   target: dir:_codeql_detected_source_root:apps:web-backend
-  type: contains
-- source: dir:_codeql_detected_source_root:apps
-  target: dir:_codeql_detected_source_root:apps:_scratch
   type: contains
 - source: dir:_codeql_detected_source_root
   target: dir:_codeql_detected_source_root:_codeql_detected_source_root
@@ -11000,9 +10358,6 @@ edges:
   target: dir:_codeql_detected_source_root:services:mcp
   type: contains
 - source: dir:_codeql_detected_source_root:services
-  target: dir:_codeql_detected_source_root:services:_scratch
-  type: contains
-- source: dir:_codeql_detected_source_root:services
   target: dir:_codeql_detected_source_root:services:agents
   type: contains
 - source: dir:_codeql_detected_source_root:services
@@ -11111,9 +10466,6 @@ edges:
   target: dir:_codeql_detected_source_root:tools:cli
   type: contains
 - source: dir:_codeql_detected_source_root:tools
-  target: dir:_codeql_detected_source_root:tools:_scratch
-  type: contains
-- source: dir:_codeql_detected_source_root:tools
   target: dir:_codeql_detected_source_root:tools:utilities
   type: contains
 - source: dir:_codeql_detected_source_root:tools
@@ -11210,9 +10562,6 @@ edges:
   target: file:_codeql_detected_source_root:automation:self_awareness_report.py
   type: contains
 - source: dir:_codeql_detected_source_root:automation
-  target: dir:_codeql_detected_source_root:automation:_scratch
-  type: contains
-- source: dir:_codeql_detected_source_root:automation
   target: dir:_codeql_detected_source_root:automation:autonomous
   type: contains
 - source: dir:_codeql_detected_source_root:automation
@@ -11300,31 +10649,13 @@ edges:
   target: dir:_codeql_detected_source_root:core
   type: contains
 - source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:main_system
-  type: contains
-- source: dir:_codeql_detected_source_root:core
   target: dir:_codeql_detected_source_root:core:slsa_provenance
   type: contains
 - source: dir:_codeql_detected_source_root:core
   target: dir:_codeql_detected_source_root:core:project_factory
   type: contains
 - source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:training_system
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:mcp_servers_enhanced
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:tech_stack
-  type: contains
-- source: dir:_codeql_detected_source_root:core
   target: dir:_codeql_detected_source_root:core:validators
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:yaml_module_system
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:execution_architecture
   type: contains
 - source: dir:_codeql_detected_source_root:core
   target: file:_codeql_detected_source_root:core:plugin_system.py
@@ -11337,15 +10668,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:core
   target: dir:_codeql_detected_source_root:core:hlp_executor
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:monitoring_system
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:cloud_agent_delegation
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:_scratch
   type: contains
 - source: dir:_codeql_detected_source_root:core
   target: file:_codeql_detected_source_root:core:auto_governance_hub.py
@@ -11363,19 +10685,7 @@ edges:
   target: file:_codeql_detected_source_root:core:hallucination_detector.py
   type: contains
 - source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:ci_error_handler
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:virtual_experts
-  type: contains
-- source: dir:_codeql_detected_source_root:core
   target: file:_codeql_detected_source_root:core:ai_decision_engine.py
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:ai_constitution
-  type: contains
-- source: dir:_codeql_detected_source_root:core
-  target: dir:_codeql_detected_source_root:core:execution_engine
   type: contains
 - source: dir:_codeql_detected_source_root:core
   target: file:_codeql_detected_source_root:core:context_understanding_engine.py
@@ -11420,6 +10730,9 @@ edges:
   target: file:_codeql_detected_source_root:governance:PHASE5_STATE.yaml
   type: contains
 - source: dir:_codeql_detected_source_root:governance
+  target: dir:_codeql_detected_source_root:governance:policies
+  type: contains
+- source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:10-policy
   type: contains
 - source: dir:_codeql_detected_source_root:governance
@@ -11432,10 +10745,10 @@ edges:
   target: dir:_codeql_detected_source_root:governance:14-improvement
   type: contains
 - source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:debt_auto_fix.py
+  target: dir:_codeql_detected_source_root:governance:20-information
   type: contains
 - source: dir:_codeql_detected_source_root:governance
-  target: dir:_codeql_detected_source_root:governance:examples
+  target: dir:_codeql_detected_source_root:governance:30-integration
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: file:_codeql_detected_source_root:governance:setup.py
@@ -11460,6 +10773,9 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:28-tests
+  type: contains
+- source: dir:_codeql_detected_source_root:governance
+  target: dir:_codeql_detected_source_root:governance:scripts
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:12-culture-capability
@@ -11504,9 +10820,6 @@ edges:
   target: dir:_codeql_detected_source_root:governance:17-sociological
   type: contains
 - source: dir:_codeql_detected_source_root:governance
-  target: dir:_codeql_detected_source_root:governance:_scratch
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:22-aesthetic
   type: contains
 - source: dir:_codeql_detected_source_root:governance
@@ -11517,12 +10830,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:29-docs
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:technical_debt_manager.py
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:instant_debt_resolution.py
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:38-sbom
@@ -11537,6 +10844,9 @@ edges:
   target: dir:_codeql_detected_source_root:governance:32-rules
   type: contains
 - source: dir:_codeql_detected_source_root:governance
+  target: dir:_codeql_detected_source_root:governance:schemas
+  type: contains
+- source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:40-self-healing
   type: contains
 - source: dir:_codeql_detected_source_root:governance
@@ -11547,9 +10857,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:dimensions
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:instant-governance-cli.py
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:packages
@@ -11564,13 +10871,7 @@ edges:
   target: dir:_codeql_detected_source_root:governance:34-config
   type: contains
 - source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:api_contract.py
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:80-feedback
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
-  target: file:_codeql_detected_source_root:governance:advanced_debt_restructuring.py
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:01-architecture
@@ -11582,6 +10883,9 @@ edges:
   target: dir:_codeql_detected_source_root:governance:11-tools-systems
   type: contains
 - source: dir:_codeql_detected_source_root:governance
+  target: dir:_codeql_detected_source_root:governance:10-stakeholder
+  type: contains
+- source: dir:_codeql_detected_source_root:governance
   target: file:_codeql_detected_source_root:governance:governance.yaml
   type: contains
 - source: dir:_codeql_detected_source_root:governance
@@ -11589,9 +10893,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:18-complex-system
-  type: contains
-- source: dir:_codeql_detected_source_root:governance
-  target: dir:_codeql_detected_source_root:governance:_legacy
   type: contains
 - source: dir:_codeql_detected_source_root:governance
   target: dir:_codeql_detected_source_root:governance:39-automation
@@ -11864,9 +11165,6 @@ edges:
   target: dir:_codeql_detected_source_root:infra
   type: contains
 - source: dir:_codeql_detected_source_root:infra
-  target: dir:_codeql_detected_source_root:infra:_scratch
-  type: contains
-- source: dir:_codeql_detected_source_root:infra
   target: dir:_codeql_detected_source_root:infra:config
   type: contains
 - source: dir:_codeql_detected_source_root:infra
@@ -11889,9 +11187,6 @@ edges:
   type: contains
 - source: dir:_codeql_detected_source_root:island-ai
   target: dir:_codeql_detected_source_root:island-ai:examples
-  type: contains
-- source: dir:_codeql_detected_source_root:island-ai
-  target: file:_codeql_detected_source_root:island-ai:jest.config.js
   type: contains
 - source: dir:_codeql_detected_source_root:island-ai
   target: dir:_codeql_detected_source_root:island-ai:src
@@ -11922,9 +11217,6 @@ edges:
   type: contains
 - source: dir:services:mcp
   target: dir:services:mcp:deploy
-  type: contains
-- source: dir:services
-  target: dir:services:_scratch
   type: contains
 - source: dir:services
   target: dir:services:agents
@@ -12473,9 +11765,6 @@ edges:
   target: dir:tools:cli:src
   type: contains
 - source: dir:tools
-  target: dir:tools:_scratch
-  type: contains
-- source: dir:tools
   target: dir:tools:utilities
   type: contains
 - source: dir:tools:utilities
@@ -12695,9 +11984,6 @@ edges:
   target: file:automation:self_awareness_report.py
   type: contains
 - source: dir:automation
-  target: dir:automation:_scratch
-  type: contains
-- source: dir:automation
   target: dir:automation:autonomous
   type: contains
 - source: dir:automation:autonomous
@@ -12829,9 +12115,6 @@ edges:
 - source: dir:docs:examples
   target: dir:docs:examples:configuration
   type: contains
-- source: dir:docs:examples
-  target: dir:docs:examples:project-generation
-  type: contains
 - source: dir:docs
   target: file:docs:unmanned-island.mndoc.yaml
   type: contains
@@ -12926,24 +12209,6 @@ edges:
   target: dir:core
   type: contains
 - source: dir:core
-  target: dir:core:main_system
-  type: contains
-- source: dir:core:main_system
-  target: file:core:main_system:automation_pipeline.py
-  type: contains
-- source: dir:core:main_system
-  target: file:core:main_system:phase_orchestrator.py
-  type: contains
-- source: dir:core:main_system
-  target: file:core:main_system:system_bootstrap.py
-  type: contains
-- source: dir:core:main_system
-  target: file:core:main_system:__init__.py
-  type: contains
-- source: dir:core:main_system
-  target: file:core:main_system:synergymesh_core.py
-  type: contains
-- source: dir:core
   target: dir:core:slsa_provenance
   type: contains
 - source: dir:core:slsa_provenance
@@ -12986,64 +12251,7 @@ edges:
   target: file:core:project_factory:generator.py
   type: contains
 - source: dir:core:project_factory
-  target: dir:core:project_factory:tests
-  type: contains
-- source: dir:core:project_factory
   target: file:core:project_factory:__init__.py
-  type: contains
-- source: dir:core:project_factory
-  target: dir:core:project_factory:templates
-  type: contains
-- source: dir:core
-  target: dir:core:training_system
-  type: contains
-- source: dir:core:training_system
-  target: file:core:training_system:example_library.py
-  type: contains
-- source: dir:core:training_system
-  target: file:core:training_system:skills_training.py
-  type: contains
-- source: dir:core:training_system
-  target: file:core:training_system:__init__.py
-  type: contains
-- source: dir:core:training_system
-  target: file:core:training_system:knowledge_base.py
-  type: contains
-- source: dir:core
-  target: dir:core:mcp_servers_enhanced
-  type: contains
-- source: dir:core:mcp_servers_enhanced
-  target: file:core:mcp_servers_enhanced:realtime_connector.py
-  type: contains
-- source: dir:core:mcp_servers_enhanced
-  target: file:core:mcp_servers_enhanced:tool_registry.py
-  type: contains
-- source: dir:core:mcp_servers_enhanced
-  target: file:core:mcp_servers_enhanced:workflow_orchestrator.py
-  type: contains
-- source: dir:core:mcp_servers_enhanced
-  target: file:core:mcp_servers_enhanced:mcp_server_manager.py
-  type: contains
-- source: dir:core:mcp_servers_enhanced
-  target: file:core:mcp_servers_enhanced:__init__.py
-  type: contains
-- source: dir:core
-  target: dir:core:tech_stack
-  type: contains
-- source: dir:core:tech_stack
-  target: file:core:tech_stack:multi_agent_coordinator.py
-  type: contains
-- source: dir:core:tech_stack
-  target: file:core:tech_stack:python_bridge.py
-  type: contains
-- source: dir:core:tech_stack
-  target: file:core:tech_stack:framework_integrations.py
-  type: contains
-- source: dir:core:tech_stack
-  target: file:core:tech_stack:architecture_config.py
-  type: contains
-- source: dir:core:tech_stack
-  target: file:core:tech_stack:__init__.py
   type: contains
 - source: dir:core
   target: dir:core:validators
@@ -13062,51 +12270,6 @@ edges:
   type: contains
 - source: dir:core:validators
   target: file:core:validators:__init__.py
-  type: contains
-- source: dir:core
-  target: dir:core:yaml_module_system
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:policy_gate.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:yaml_schema_validator.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:yaml_module_definition.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:ci_verification_pipeline.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:slsa_compliance.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:audit_trail.py
-  type: contains
-- source: dir:core:yaml_module_system
-  target: file:core:yaml_module_system:__init__.py
-  type: contains
-- source: dir:core
-  target: dir:core:execution_architecture
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:function_calling.py
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:mcp_integration.py
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:tool_system.py
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:agent_orchestration.py
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:langchain_integration.py
-  type: contains
-- source: dir:core:execution_architecture
-  target: file:core:execution_architecture:__init__.py
   type: contains
 - source: dir:core
   target: file:core:plugin_system.py
@@ -13190,51 +12353,6 @@ edges:
   target: file:core:hlp_executor:partial_rollback.py
   type: contains
 - source: dir:core
-  target: dir:core:monitoring_system
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:intelligent_monitoring.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:observability_platform.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:auto_remediation.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:smart_anomaly_detector.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:auto_diagnosis.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:__init__.py
-  type: contains
-- source: dir:core:monitoring_system
-  target: file:core:monitoring_system:self_learning.py
-  type: contains
-- source: dir:core
-  target: dir:core:cloud_agent_delegation
-  type: contains
-- source: dir:core:cloud_agent_delegation
-  target: file:core:cloud_agent_delegation:load_balancer.py
-  type: contains
-- source: dir:core:cloud_agent_delegation
-  target: file:core:cloud_agent_delegation:task_router.py
-  type: contains
-- source: dir:core:cloud_agent_delegation
-  target: file:core:cloud_agent_delegation:delegation_manager.py
-  type: contains
-- source: dir:core:cloud_agent_delegation
-  target: file:core:cloud_agent_delegation:cloud_provider_adapter.py
-  type: contains
-- source: dir:core:cloud_agent_delegation
-  target: file:core:cloud_agent_delegation:__init__.py
-  type: contains
-- source: dir:core
-  target: dir:core:_scratch
-  type: contains
-- source: dir:core
   target: file:core:auto_governance_hub.py
   type: contains
 - source: dir:core
@@ -13242,9 +12360,6 @@ edges:
   type: contains
 - source: dir:core
   target: dir:core:advisory-database
-  type: contains
-- source: dir:core:advisory-database
-  target: file:core:advisory-database:jest.config.js
   type: contains
 - source: dir:core:advisory-database
   target: dir:core:advisory-database:src
@@ -13286,88 +12401,7 @@ edges:
   target: file:core:hallucination_detector.py
   type: contains
 - source: dir:core
-  target: dir:core:ci_error_handler
-  type: contains
-- source: dir:core:ci_error_handler
-  target: file:core:ci_error_handler:fix_status_tracker.py
-  type: contains
-- source: dir:core:ci_error_handler
-  target: file:core:ci_error_handler:auto_fix_engine.py
-  type: contains
-- source: dir:core:ci_error_handler
-  target: file:core:ci_error_handler:issue_manager.py
-  type: contains
-- source: dir:core:ci_error_handler
-  target: file:core:ci_error_handler:ci_error_analyzer.py
-  type: contains
-- source: dir:core:ci_error_handler
-  target: file:core:ci_error_handler:__init__.py
-  type: contains
-- source: dir:core
-  target: dir:core:virtual_experts
-  type: contains
-- source: dir:core:virtual_experts
-  target: file:core:virtual_experts:expert_team.py
-  type: contains
-- source: dir:core:virtual_experts
-  target: file:core:virtual_experts:expert_base.py
-  type: contains
-- source: dir:core:virtual_experts
-  target: file:core:virtual_experts:domain_experts.py
-  type: contains
-- source: dir:core:virtual_experts
-  target: file:core:virtual_experts:__init__.py
-  type: contains
-- source: dir:core
   target: file:core:ai_decision_engine.py
-  type: contains
-- source: dir:core
-  target: dir:core:ai_constitution
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:adaptive_guidelines.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:fundamental_laws.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:policy_as_prompt.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:operational_rules.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:constitution_engine.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:__init__.py
-  type: contains
-- source: dir:core:ai_constitution
-  target: file:core:ai_constitution:guardrails.py
-  type: contains
-- source: dir:core
-  target: dir:core:execution_engine
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:verification_engine.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:connector_manager.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:rollback_manager.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:capability_registry.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:action_executor.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:execution_engine.py
-  type: contains
-- source: dir:core:execution_engine
-  target: file:core:execution_engine:__init__.py
   type: contains
 - source: dir:core
   target: file:core:context_understanding_engine.py
@@ -13532,6 +12566,9 @@ edges:
   target: file:governance:PHASE5_STATE.yaml
   type: contains
 - source: dir:governance
+  target: dir:governance:policies
+  type: contains
+- source: dir:governance
   target: dir:governance:10-policy
   type: contains
 - source: dir:governance:10-policy
@@ -13631,13 +12668,22 @@ edges:
   target: file:governance:14-improvement:__init__.py
   type: contains
 - source: dir:governance
-  target: file:governance:debt_auto_fix.py
+  target: dir:governance:20-information
+  type: contains
+- source: dir:governance:20-information
+  target: file:governance:20-information:dimension.yaml
   type: contains
 - source: dir:governance
-  target: dir:governance:examples
+  target: dir:governance:30-integration
   type: contains
-- source: dir:governance:examples
-  target: file:governance:examples:api_contract_example.py
+- source: dir:governance:30-integration
+  target: file:governance:30-integration:integration-coordinator.py
+  type: contains
+- source: dir:governance:30-integration
+  target: file:governance:30-integration:GOVERNANCE_DEPENDENCY_MAP.yaml
+  type: contains
+- source: dir:governance:30-integration
+  target: file:governance:30-integration:dimension.yaml
   type: contains
 - source: dir:governance
   target: file:governance:setup.py
@@ -13848,6 +12894,30 @@ edges:
   type: contains
 - source: dir:governance:28-tests
   target: file:governance:28-tests:conftest.py
+  type: contains
+- source: dir:governance
+  target: dir:governance:scripts
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:auto-fix-medium-issues.py
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:routing-config.yaml
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:generate_dimensions.py
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:logical-consistency-engine.py
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:extreme-problem-identifier.py
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:validate-governance-structure.py
+  type: contains
+- source: dir:governance:scripts
+  target: file:governance:scripts:intelligent-file-router.py
   type: contains
 - source: dir:governance
   target: dir:governance:12-culture-capability
@@ -14144,9 +13214,6 @@ edges:
   target: file:governance:17-sociological:dimension.yaml
   type: contains
 - source: dir:governance
-  target: dir:governance:_scratch
-  type: contains
-- source: dir:governance
   target: dir:governance:22-aesthetic
   type: contains
 - source: dir:governance:22-aesthetic
@@ -14255,12 +13322,6 @@ edges:
   target: file:governance:29-docs:v2-skeleton-api-io-contract.yaml
   type: contains
 - source: dir:governance
-  target: file:governance:technical_debt_manager.py
-  type: contains
-- source: dir:governance
-  target: file:governance:instant_debt_resolution.py
-  type: contains
-- source: dir:governance
   target: dir:governance:38-sbom
   type: contains
 - source: dir:governance:38-sbom
@@ -14321,6 +13382,9 @@ edges:
   target: file:governance:32-rules:language-policy.yml
   type: contains
 - source: dir:governance
+  target: dir:governance:schemas
+  type: contains
+- source: dir:governance
   target: dir:governance:40-self-healing
   type: contains
 - source: dir:governance:40-self-healing
@@ -14372,34 +13436,10 @@ edges:
   target: dir:governance:35-scripts
   type: contains
 - source: dir:governance:35-scripts
-  target: file:governance:35-scripts:auto-fix-medium-issues.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:routing-config.yaml
-  type: contains
-- source: dir:governance:35-scripts
   target: file:governance:35-scripts:dimension.yaml
   type: contains
 - source: dir:governance:35-scripts
-  target: file:governance:35-scripts:generate_dimensions.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:logical-consistency-engine.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:instant-migration.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:extreme-problem-identifier.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:validate-governance-structure.py
-  type: contains
-- source: dir:governance:35-scripts
   target: file:governance:35-scripts:validate-python-syntax.py
-  type: contains
-- source: dir:governance:35-scripts
-  target: file:governance:35-scripts:intelligent-file-router.py
   type: contains
 - source: dir:governance
   target: dir:governance:dimensions
@@ -14651,9 +13691,6 @@ edges:
   target: dir:governance:dimensions:19-evolutionary
   type: contains
 - source: dir:governance
-  target: file:governance:instant-governance-cli.py
-  type: contains
-- source: dir:governance
   target: dir:governance:packages
   type: contains
 - source: dir:governance:packages
@@ -14729,9 +13766,6 @@ edges:
   target: file:governance:34-config:logging-config.yaml
   type: contains
 - source: dir:governance
-  target: file:governance:api_contract.py
-  type: contains
-- source: dir:governance
   target: dir:governance:80-feedback
   type: contains
 - source: dir:governance:80-feedback
@@ -14739,9 +13773,6 @@ edges:
   type: contains
 - source: dir:governance:80-feedback
   target: file:governance:80-feedback:framework.yaml
-  type: contains
-- source: dir:governance
-  target: file:governance:advanced_debt_restructuring.py
   type: contains
 - source: dir:governance
   target: dir:governance:01-architecture
@@ -14822,6 +13853,39 @@ edges:
   target: file:governance:11-tools-systems:process-management-system.yaml
   type: contains
 - source: dir:governance
+  target: dir:governance:10-stakeholder
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:automation_engine.py
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-satisfaction-survey.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-identification.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:conflict-resolution-procedures.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:dimension.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-analysis.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-policy.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-engagement-plan.yaml
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:__init__.py
+  type: contains
+- source: dir:governance:10-stakeholder
+  target: file:governance:10-stakeholder:stakeholder-communication-plan.yaml
+  type: contains
+- source: dir:governance
   target: file:governance:governance.yaml
   type: contains
 - source: dir:governance
@@ -14835,18 +13899,6 @@ edges:
   type: contains
 - source: dir:governance:18-complex-system
   target: file:governance:18-complex-system:dimension.yaml
-  type: contains
-- source: dir:governance
-  target: dir:governance:_legacy
-  type: contains
-- source: dir:governance:_legacy
-  target: dir:governance:_legacy:20-information
-  type: contains
-- source: dir:governance:_legacy
-  target: dir:governance:_legacy:30-integration
-  type: contains
-- source: dir:governance:_legacy
-  target: dir:governance:_legacy:10-stakeholder
   type: contains
 - source: dir:governance
   target: dir:governance:39-automation
@@ -15536,9 +14588,6 @@ edges:
   target: dir:infra
   type: contains
 - source: dir:infra
-  target: dir:infra:_scratch
-  type: contains
-- source: dir:infra
   target: dir:infra:config
   type: contains
 - source: dir:infra:config
@@ -15645,9 +14694,6 @@ edges:
   type: contains
 - source: dir:island-ai:examples
   target: file:island-ai:examples:multi-agent-collaboration.ts
-  type: contains
-- source: dir:island-ai
-  target: file:island-ai:jest.config.js
   type: contains
 - source: dir:island-ai
   target: dir:island-ai:src
@@ -15779,19 +14825,19 @@ edges:
   target: config:config:unified-config-index.yaml
   type: configures
 statistics:
-  total_nodes: 1751
-  total_edges: 1750
+  total_nodes: 1645
+  total_edges: 1644
   nodes_by_type:
     system: 1
-    directory: 753
-    config: 507
-    module: 441
+    directory: 718
+    config: 518
+    module: 359
     subsystem: 24
     document: 9
     capability: 15
     component: 1
   edges_by_type:
-    contains: 1731
+    contains: 1625
     provides: 15
     configures: 4
 meta:

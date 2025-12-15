@@ -2,18 +2,14 @@
 
 # 核心平台服務
 
-> 平台核心能力層，提供 AI 引擎、決策系統、安全機制和整合服務。Platform core
-> capabilities layer, providing AI engines, decision systems, safety mechanisms,
-> and integration services.
+> 平台核心能力層，提供 AI 引擎、決策系統、安全機制和整合服務。
+> Platform core capabilities layer, providing AI engines, decision systems, safety mechanisms, and integration services.
 
 ## 📋 Overview 概述
 
-本目錄包含 SynergyMesh 平台的核心服務和能力。這些是平台級的共用服務，被其他模組（如
-`agent/`、`automation/`）調用。
+本目錄包含 SynergyMesh 平台的核心服務和能力。這些是平台級的共用服務，被其他模組（如 `agent/`、`automation/`）調用。
 
-This directory contains core services and capabilities for the SynergyMesh
-platform. These are platform-level shared services that are called by other
-modules such as `agent/` and `automation/`.
+This directory contains core services and capabilities for the SynergyMesh platform. These are platform-level shared services that are called by other modules such as `agent/` and `automation/`.
 
 ## 📁 Directory Structure 目錄結構
 
@@ -68,6 +64,11 @@ core/
    - `safety_mechanisms/` - 安全機制實作
    - `slsa_provenance/` - SLSA 供應鏈安全
    - `advisory-database/` - 安全諮詢和漏洞資料庫
+   - **🆕 Security Enhancements (PR #351)**:
+     - SEC-PATH-001: Path traversal prevention (`contract_service/contracts-L1`)
+     - SEC-LOG-001: Secure logging with sensitive data redaction
+     - SEC-CRYPTO-001: Strong cryptographic algorithms (SHA-256+)
+     - Reference: [Security Enhancements Doc](../docs/security/PR351_SECURITY_ENHANCEMENTS.md)
 
 5. **Integration 整合**
    - `unified_integration/` - 統一系統整合層
@@ -86,21 +87,21 @@ core/
 
 ### ✅ Allowed Dependencies 允許的依賴
 
-| Dependency 依賴 | Purpose 用途       |
-| --------------- | ------------------ |
-| `shared/`       | 共用工具和配置     |
-| `runtime/`      | 運行時環境         |
-| `config/`       | 配置文件           |
-| `governance/`   | 治理規則（僅讀取） |
+| Dependency 依賴 | Purpose 用途 |
+|----------------|--------------|
+| `shared/` | 共用工具和配置 |
+| `runtime/` | 運行時環境 |
+| `config/` | 配置文件 |
+| `governance/` | 治理規則（僅讀取） |
 
 ### ❌ Prohibited Dependencies 禁止的依賴
 
-| Should NOT depend on 不應依賴 | Reason 原因                          |
-| ----------------------------- | ------------------------------------ |
-| `automation/`                 | 避免循環依賴，automation 應調用 core |
-| `agent/`                      | 避免循環依賴，agent 應調用 core      |
-| `mcp-servers/`                | core 是被調用方，不應反向依賴        |
-| `frontend/`                   | 核心服務不應依賴 UI                  |
+| Should NOT depend on 不應依賴 | Reason 原因 |
+|------------------------------|-------------|
+| `automation/` | 避免循環依賴，automation 應調用 core |
+| `agent/` | 避免循環依賴，agent 應調用 core |
+| `mcp-servers/` | core 是被調用方，不應反向依賴 |
+| `frontend/` | 核心服務不應依賴 UI |
 
 ## 📦 Key Modules 關鍵模組
 
@@ -147,10 +148,10 @@ result = await executor.execute(
 
 **重要區分 Important Distinction:**
 
-| 目錄 Directory           | 內容 Content | 說明 Description                         |
-| ------------------------ | ------------ | ---------------------------------------- |
-| `core/contract_service/` | 微服務程式碼 | 合約管理服務的實作代碼                   |
-| `contracts/` (根目錄)    | 合約定義資料 | 外部 API 合約規格 (OpenAPI, JSON Schema) |
+| 目錄 Directory | 內容 Content | 說明 Description |
+|----------------|--------------|------------------|
+| `core/contract_service/` | 微服務程式碼 | 合約管理服務的實作代碼 |
+| `contracts/` (根目錄) | 合約定義資料 | 外部 API 合約規格 (OpenAPI, JSON Schema) |
 
 ---
 
@@ -163,9 +164,9 @@ result = await executor.execute(
 
 ## 📝 Document History 文檔歷史
 
-| Date 日期  | Version 版本 | Changes 變更                             |
-| ---------- | ------------ | ---------------------------------------- |
-| 2025-11-30 | 1.0.0        | Initial README with boundary definitions |
+| Date 日期 | Version 版本 | Changes 變更 |
+|-----------|-------------|--------------|
+| 2025-11-30 | 1.0.0 | Initial README with boundary definitions |
 
 ---
 

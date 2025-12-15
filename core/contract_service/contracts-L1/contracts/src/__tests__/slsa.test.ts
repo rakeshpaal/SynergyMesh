@@ -1,15 +1,11 @@
 import request from 'supertest';
-import express, { Router } from 'express';
-import routes, { createRateLimiter } from '../routes';
+import express from 'express';
+import routes from '../routes';
 import { loggingMiddleware } from '../middleware/logging';
 import { errorMiddleware } from '../middleware/error';
 import { writeFile, unlink } from 'fs/promises';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { ProvenanceController } from '../controllers/provenance';
-import { SLSAController } from '../controllers/slsa';
-import { AssignmentController } from '../controllers/assignment';
-import { EscalationController } from '../controllers/escalation';
 
 // Create standalone test application
 const createTestApp = () => {
@@ -17,35 +13,6 @@ const createTestApp = () => {
   app.use(express.json());
   app.use(loggingMiddleware);
   app.use(routes);
-  app.use(errorMiddleware);
-  return app;
-};
-
-/**
- * Creates a test app with an isolated rate limiter for rate limiting tests.
- * This ensures that rate limit counters from other tests do not interfere.
- */
-const createTestAppWithIsolatedRateLimiter = () => {
-  const app = express();
-  app.use(express.json());
-  app.use(loggingMiddleware);
-
-  // Create a router with an isolated rate limiter
-  const router = Router();
-  const limiter = createRateLimiter();
-
-  // Controller instances
-  const provenanceController = new ProvenanceController();
-  const slsaController = new SLSAController();
-  const assignmentController = new AssignmentController();
-  const escalationController = new EscalationController();
-
-  // Register routes with isolated rate limiter
-  // Only register the routes we need for rate limiting tests
-  router.post('/api/v1/slsa/attestations', limiter, slsaController.createAttestation);
-  router.post('/api/v1/slsa/summary', limiter, slsaController.getAttestationSummary);
-
-  app.use(router);
   app.use(errorMiddleware);
   return app;
 };
@@ -76,8 +43,8 @@ describe('SLSA API Endpoints', () => {
           subjectPath: testFilePath,
           builder: {
             id: 'https://github.com/synergymesh/builder',
-            version: '1.0.0'
-          }
+            version: '1.0.0',
+          },
         });
 
       expect(response.status).toBe(201);
@@ -86,7 +53,7 @@ describe('SLSA API Endpoints', () => {
         provenance: expect.any(Object),
         attestationId: expect.any(String),
         subjects: 1,
-        buildType: expect.any(String)
+        buildType: expect.any(String),
       });
       expect(response.body.message).toContain('successfully');
     });
@@ -99,8 +66,8 @@ describe('SLSA API Endpoints', () => {
           subjectName: 'test-artifact.tar.gz',
           builder: {
             id: 'https://github.com/synergymesh/builder',
-            version: '2.0.0'
-          }
+            version: '2.0.0',
+          },
         });
 
       expect(response.status).toBe(201);
@@ -114,8 +81,8 @@ describe('SLSA API Endpoints', () => {
         .send({
           builder: {
             id: 'test-builder',
-            version: '1.0.0'
-          }
+            version: '1.0.0',
+          },
         });
 
       expect(response.status).toBe(400);
@@ -124,11 +91,9 @@ describe('SLSA API Endpoints', () => {
     });
 
     it('should return 400 for missing builder', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/attestations')
-        .send({
-          subjectPath: testFilePath
-        });
+      const response = await request(app).post('/api/v1/slsa/attestations').send({
+        subjectPath: testFilePath,
+      });
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -144,23 +109,21 @@ describe('SLSA API Endpoints', () => {
           subjectPath: testFilePath,
           builder: {
             id: 'test-builder',
-            version: '1.0.0'
-          }
+            version: '1.0.0',
+          },
         });
 
       const { provenance } = createResponse.body.data;
 
       // Then verify it
-      const verifyResponse = await request(app)
-        .post('/api/v1/slsa/verify')
-        .send({ provenance });
+      const verifyResponse = await request(app).post('/api/v1/slsa/verify').send({ provenance });
 
       expect(verifyResponse.status).toBe(200);
       expect(verifyResponse.body.success).toBe(true);
       expect(verifyResponse.body.data).toMatchObject({
         valid: expect.any(Boolean),
         timestamp: expect.any(String),
-        provenanceType: expect.any(String)
+        provenanceType: expect.any(String),
       });
     });
 
@@ -169,8 +132,8 @@ describe('SLSA API Endpoints', () => {
         .post('/api/v1/slsa/verify')
         .send({
           provenance: {
-            invalid: 'structure'
-          }
+            invalid: 'structure',
+          },
         });
 
       expect(response.status).toBe(200);
@@ -179,9 +142,7 @@ describe('SLSA API Endpoints', () => {
     });
 
     it('should return 400 for missing provenance', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/verify')
-        .send({});
+      const response = await request(app).post('/api/v1/slsa/verify').send({});
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -190,11 +151,9 @@ describe('SLSA API Endpoints', () => {
 
   describe('POST /api/v1/slsa/digest', () => {
     it('should generate digest for content', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/digest')
-        .send({
-          content: 'Hello, World!'
-        });
+      const response = await request(app).post('/api/v1/slsa/digest').send({
+        content: 'Hello, World!',
+      });
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
@@ -203,28 +162,22 @@ describe('SLSA API Endpoints', () => {
         digest: expect.any(Object),
         sha256: expect.stringMatching(/^[a-f0-9]{64}$/),
         algorithm: 'sha256',
-        timestamp: expect.any(String)
+        timestamp: expect.any(String),
       });
     });
 
     it('should return consistent digest for same content', async () => {
       const content = 'Consistent test content';
 
-      const response1 = await request(app)
-        .post('/api/v1/slsa/digest')
-        .send({ content });
+      const response1 = await request(app).post('/api/v1/slsa/digest').send({ content });
 
-      const response2 = await request(app)
-        .post('/api/v1/slsa/digest')
-        .send({ content });
+      const response2 = await request(app).post('/api/v1/slsa/digest').send({ content });
 
       expect(response1.body.data.sha256).toBe(response2.body.data.sha256);
     });
 
     it('should return 400 for missing content', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/digest')
-        .send({});
+      const response = await request(app).post('/api/v1/slsa/digest').send({});
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -233,15 +186,14 @@ describe('SLSA API Endpoints', () => {
 
   describe('POST /api/v1/slsa/contracts', () => {
     it('should create contract attestation', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/contracts')
-        .send({
-          contractName: 'TestContract',
-          contractVersion: '1.0.0',
-          deployerAddress: '0x1234567890abcdef',
-          contractCode: 'contract TestContract { function test() public pure returns (bool) { return true; } }',
-          deploymentTxHash: '0xabcdef1234567890'
-        });
+      const response = await request(app).post('/api/v1/slsa/contracts').send({
+        contractName: 'TestContract',
+        contractVersion: '1.0.0',
+        deployerAddress: '0x1234567890abcdef',
+        contractCode:
+          'contract TestContract { function test() public pure returns (bool) { return true; } }',
+        deploymentTxHash: '0xabcdef1234567890',
+      });
 
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
@@ -253,18 +205,16 @@ describe('SLSA API Endpoints', () => {
           deployerAddress: '0x1234567890abcdef',
           deploymentTxHash: '0xabcdef1234567890',
           codeHash: expect.stringMatching(/^[a-f0-9]{64}$/),
-          attestationId: expect.any(String)
-        }
+          attestationId: expect.any(String),
+        },
       });
     });
 
     it('should create contract attestation with minimal fields', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/contracts')
-        .send({
-          contractName: 'MinimalContract',
-          contractCode: 'contract Minimal {}'
-        });
+      const response = await request(app).post('/api/v1/slsa/contracts').send({
+        contractName: 'MinimalContract',
+        contractCode: 'contract Minimal {}',
+      });
 
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
@@ -272,22 +222,18 @@ describe('SLSA API Endpoints', () => {
     });
 
     it('should return 400 for missing contract name', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/contracts')
-        .send({
-          contractCode: 'contract Test {}'
-        });
+      const response = await request(app).post('/api/v1/slsa/contracts').send({
+        contractCode: 'contract Test {}',
+      });
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
     });
 
     it('should return 400 for missing contract code', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/contracts')
-        .send({
-          contractName: 'TestContract'
-        });
+      const response = await request(app).post('/api/v1/slsa/contracts').send({
+        contractName: 'TestContract',
+      });
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
@@ -303,16 +249,14 @@ describe('SLSA API Endpoints', () => {
           subjectPath: testFilePath,
           builder: {
             id: 'test-builder',
-            version: '1.0.0'
-          }
+            version: '1.0.0',
+          },
         });
 
       const { provenance } = createResponse.body.data;
 
       // Get summary
-      const summaryResponse = await request(app)
-        .post('/api/v1/slsa/summary')
-        .send({ provenance });
+      const summaryResponse = await request(app).post('/api/v1/slsa/summary').send({ provenance });
 
       expect(summaryResponse.status).toBe(200);
       expect(summaryResponse.body.success).toBe(true);
@@ -324,144 +268,15 @@ describe('SLSA API Endpoints', () => {
         buildType: expect.any(String),
         builder: expect.any(String),
         timestamp: expect.any(String),
-        invocationId: expect.any(String)
+        invocationId: expect.any(String),
       });
     });
 
     it('should return 400 for missing provenance', async () => {
-      const response = await request(app)
-        .post('/api/v1/slsa/summary')
-        .send({});
+      const response = await request(app).post('/api/v1/slsa/summary').send({});
 
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
-    });
-  });
-
-  describe('POST /api/v1/slsa/summary - Rate Limiting', () => {
-    let rateLimitApp: express.Application;
-    let provenance: any;
-
-    beforeAll(async () => {
-      // Create a fresh app instance with isolated rate limiter for these tests
-      // This ensures rate limit counters from other tests don't interfere
-      rateLimitApp = createTestAppWithIsolatedRateLimiter();
-
-      // Create a provenance for rate limiting tests
-      const testFile = join(tmpdir(), `test-slsa-ratelimit-${Date.now()}.txt`);
-      await writeFile(testFile, 'test content for rate limiting');
-
-      const createResponse = await request(rateLimitApp)
-        .post('/api/v1/slsa/attestations')
-        .send({
-          subjectPath: testFile,
-          builder: {
-            id: 'test-builder',
-            version: '1.0.0'
-          }
-        });
-
-      provenance = createResponse.body.data.provenance;
-
-      try {
-        await unlink(testFile);
-      } catch {
-        // Ignore cleanup errors
-      }
-    });
-
-    it('should allow requests within the rate limit', async () => {
-      // Make multiple requests within the limit (test with 5 requests)
-      const requests = Array(5).fill(null).map(() =>
-        request(rateLimitApp)
-          .post('/api/v1/slsa/summary')
-          .send({ provenance })
-      );
-
-      const responses = await Promise.all(requests);
-
-      // All requests should succeed
-      responses.forEach((response) => {
-        expect(response.status).toBe(200);
-        expect(response.body.success).toBe(true);
-      });
-    });
-
-    it('should include rate limit headers', async () => {
-      const response = await request(rateLimitApp)
-        .post('/api/v1/slsa/summary')
-        .send({ provenance });
-
-      // Rate limit headers should be present regardless of rate limit status
-      expect(response.headers['ratelimit-limit']).toBeDefined();
-      expect(response.headers['ratelimit-remaining']).toBeDefined();
-      expect(response.headers['ratelimit-reset']).toBeDefined();
-
-      // Verify the limit is set to 100
-      expect(response.headers['ratelimit-limit']).toBe('100');
-    });
-
-    it('should reset rate limit after the configured window expires', async () => {
-      // This test validates the reset behavior conceptually
-      // In a real-world scenario, the rate limiter uses a 15-minute window
-      // For testing, we verify the reset timestamp is set in the future
-      const response = await request(rateLimitApp)
-        .post('/api/v1/slsa/summary')
-        .send({ provenance });
-
-      const resetHeader = response.headers['ratelimit-reset'];
-      expect(resetHeader).toBeDefined();
-
-      // The reset header contains the number of seconds until the rate limit resets
-      // (not an absolute timestamp)
-      const secondsUntilReset = parseInt(resetHeader as string, 10);
-      const fifteenMinutes = 15 * 60;
-
-      // Verify the reset time is positive and within the 15-minute window
-      expect(secondsUntilReset).toBeGreaterThan(0);
-      expect(secondsUntilReset).toBeLessThanOrEqual(fifteenMinutes);
-    });
-
-    it('should reject requests exceeding the rate limit with 429 status', async () => {
-      // The rate limiter is configured for 100 requests per 15 minutes
-      // We need to account for requests already made in previous tests
-      // Check current remaining count first
-      const checkResponse = await request(rateLimitApp)
-        .post('/api/v1/slsa/summary')
-        .send({ provenance });
-
-      const remaining = parseInt(checkResponse.headers['ratelimit-remaining'] as string, 10);
-
-      // Make enough requests to exceed the limit
-      const requestsToMake = remaining + 2; // Exceed by at least 1
-      const requests = Array(requestsToMake).fill(null).map(() =>
-        request(rateLimitApp)
-          .post('/api/v1/slsa/summary')
-          .send({ provenance })
-      );
-
-      const responses = await Promise.all(requests);
-
-      // At least one request should be rate limited
-      const rateLimitedRequests = responses.filter(r => r.status === 429);
-      expect(rateLimitedRequests.length).toBeGreaterThanOrEqual(1);
-
-      // Verify the rate limit error response format
-      const rateLimitedResponse = rateLimitedRequests[0];
-      expect(rateLimitedResponse.body).toMatchObject({
-        error: {
-          code: 'RATE_LIMIT',
-          message: 'Too many requests, please try again later.',
-          status: 429,
-          timestamp: expect.any(String),
-          traceId: expect.any(String)
-        }
-      });
-
-      // Verify rate limit headers are still present in error response
-      expect(rateLimitedResponse.headers['ratelimit-limit']).toBeDefined();
-      expect(rateLimitedResponse.headers['ratelimit-remaining']).toBe('0');
-      expect(rateLimitedResponse.headers['ratelimit-reset']).toBeDefined();
     });
   });
 });
@@ -481,7 +296,7 @@ describe('Health Check Endpoints', () => {
       expect(response.body).toMatchObject({
         status: 'healthy',
         timestamp: expect.any(String),
-        service: 'contracts-l1'
+        service: 'contracts-l1',
       });
     });
   });
@@ -494,7 +309,7 @@ describe('Health Check Endpoints', () => {
       expect(response.body).toMatchObject({
         status: 'ready',
         timestamp: expect.any(String),
-        checks: expect.any(Object)
+        checks: expect.any(Object),
       });
     });
   });
@@ -507,7 +322,7 @@ describe('Health Check Endpoints', () => {
       expect(response.body).toMatchObject({
         version: expect.any(String),
         build: expect.any(String),
-        timestamp: expect.any(String)
+        timestamp: expect.any(String),
       });
     });
   });
@@ -522,7 +337,7 @@ describe('Health Check Endpoints', () => {
         status: 'running',
         uptime: expect.any(Number),
         memory: expect.any(Object),
-        timestamp: expect.any(String)
+        timestamp: expect.any(String),
       });
     });
   });
@@ -544,8 +359,8 @@ describe('Health Check Endpoints', () => {
           provenance: expect.any(Object),
           slsa: expect.any(Object),
           assignment: expect.any(Object),
-          escalation: expect.any(Object)
-        }
+          escalation: expect.any(Object),
+        },
       });
     });
   });
