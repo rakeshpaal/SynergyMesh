@@ -6,10 +6,15 @@ cd "$ROOT"
 
 SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-}"
 PR_BODY="${PR_BODY:-}"
-GOV_SCAN_SCRIPT="governance/35-scripts/scan-governance-directory.py" # legacy path retained for compatibility
+GOV_SCAN_SCRIPT="governance/35-scripts/scan-governance-directory.py" # numeric prefix retained for governance conventions
 
 log() {
   echo "[governed-build] $*"
+}
+
+install_minimal_governance_deps() {
+  log "Installing minimal governance deps (pyyaml jsonschema)"
+  pip install pyyaml jsonschema
 }
 
 NODE_PRESENT=false
@@ -61,13 +66,15 @@ if [[ -d services ]]; then
   (cd services && go build ./...)
 fi
 
-if [[ -n "$(find . -name '*.py' -type f -print -quit 2>/dev/null)" ]] || [[ -f requirements.txt || -f pyproject.toml ]]; then
+if [[ -f requirements.txt || -f pyproject.toml ]]; then
+  PY_PRESENT=true
+elif [[ -n "$(find . -name '*.py' -type f -print -quit 2>/dev/null)" ]]; then
   PY_PRESENT=true
   log "Python dependencies and tests"
   if [[ -f requirements.txt ]]; then
     pip install -r requirements.txt
   else
-    pip install pytest
+    pip install pytest==7.4.4
   fi
   pytest
 fi
@@ -89,11 +96,11 @@ python -m pip install --upgrade pip
 if [[ -f requirements-workflow.txt ]]; then
   pip install -r requirements-workflow.txt || {
     log "requirements-workflow.txt install failed; installing minimal governance deps"
-    pip install pyyaml jsonschema
+    install_minimal_governance_deps
   }
 else
   log "requirements-workflow.txt missing; installing minimal governance deps"
-  pip install pyyaml jsonschema
+  install_minimal_governance_deps
 fi
 python governance/scripts/validate-governance-structure.py --verbose
 make validate-governance-ci
