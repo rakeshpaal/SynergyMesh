@@ -1,28 +1,137 @@
-name: 03-build
+name: Governed Build Pipeline
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
-
-# Cost protection: prevent concurrent runs
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: governed-build-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
-  # Workflow status check - always runs to prevent startup_failure
-  workflow-status:
+  lint-and-validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 1
+    timeout-minutes: 20
     steps:
-      - name: Workflow validation
-        run: echo "Build workflow triggered successfully"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run workspace lint
+        run: npm run lint --workspaces --if-present
+
+      - name: Run docs lint
+        run: npm run docs:lint
+
+      - name: Setup Rust toolchain
+        if: ${{ hashFiles('core/**') != '' }}
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt,clippy
+
+      - name: Rust formatting check
+        if: ${{ hashFiles('core/**') != '' }}
+        run: |
+          cargo fmt --all -- --check
+          cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Setup Go
+        if: ${{ hashFiles('services/**') != '' }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+
+      - name: Go formatting check
+        if: ${{ hashFiles('services/**') != '' }}
+        run: test -z "$(gofmt -l ./services)"
+
+      - name: Validate manifest bootstrap
+        run: python3 tools/bootstrap_from_manifest.py island.bootstrap.stage0.yaml --steps scaffold.directories materialize.templates
+
+  tests:
+    needs: lint-and-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: ${{ hashFiles('package.json') != '' }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install Node dependencies
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm install
+
+      - name: Run workspace tests
+        if: ${{ hashFiles('package.json') != '' }}
+        run: npm run test --workspaces --if-present
+
+      - name: Setup Rust
+        if: ${{ hashFiles('core/**') != '' }}
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Rust tests
+        if: ${{ hashFiles('core/**') != '' }}
+        run: cargo test --workspace --all-features
+
+      - name: Setup Go
+        if: ${{ hashFiles('services/**') != '' }}
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+
+      - name: Run Go tests
+        if: ${{ hashFiles('services/**') != '' }}
+        run: go test ./...
+        working-directory: services
+
+      - name: Setup Python
+        if: ${{ hashFiles('**/*.py', 'requirements.txt', 'pyproject.toml') != '' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run Python tests
+        if: ${{ hashFiles('**/*.py', 'requirements.txt', 'pyproject.toml') != '' }}
+        run: |
+          pip install -r requirements.txt || pip install pytest
+          pytest
+
+      - name: Setup Java
+        if: ${{ hashFiles('pom.xml') != '' }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+          cache: maven
+
+      - name: Run Java tests
+        if: ${{ hashFiles('pom.xml') != '' }}
+        run: mvn test
 
   build-matrix:
-    needs: workflow-status
-    timeout-minutes: 15  # Prevent runaway costs
+    needs: tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -31,47 +140,96 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: ${{ matrix.target == 'typescript' }}
+        if: ${{ matrix.target == 'typescript' && hashFiles('package.json') != '' }}
         uses: actions/setup-node@v6
         with:
           node-version: 18
           cache: npm
 
       - name: Build TypeScript workspaces
-        if: ${{ matrix.target == 'typescript' }}
+        if: ${{ matrix.target == 'typescript' && hashFiles('package.json') != '' }}
         run: |
           npm install
           npm run build --workspaces --if-present
 
       - name: Setup Rust
-        if: ${{ matrix.target == 'rust' }}
+        if: ${{ matrix.target == 'rust' && hashFiles('core/**') != '' }}
         uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy
 
       - name: Cargo build
-        if: ${{ matrix.target == 'rust' }}
+        if: ${{ matrix.target == 'rust' && hashFiles('core/**') != '' }}
         run: cargo build --workspace --all-features
 
       - name: Setup Go
-        if: ${{ matrix.target == 'go' }}
+        if: ${{ matrix.target == 'go' && hashFiles('services/**') != '' }}
         uses: actions/setup-go@v5
         with:
           go-version: 1.21
 
       - name: Go build
-        if: ${{ matrix.target == 'go' }}
+        if: ${{ matrix.target == 'go' && hashFiles('services/**') != '' }}
         run: go build ./...
         working-directory: services
 
       - name: Setup Java
-        if: ${{ matrix.target == 'java' }}
+        if: ${{ matrix.target == 'java' && hashFiles('pom.xml') != '' }}
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: "21"
           cache: maven
 
       - name: Maven build
-        if: ${{ matrix.target == 'java' }}
+        if: ${{ matrix.target == 'java' && hashFiles('pom.xml') != '' }}
         run: mvn clean install -DskipTests
+
+  governance:
+    needs: [lint-and-validate, tests, build-matrix]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install governance dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-workflow.txt || pip install pyyaml jsonschema
+
+      - name: Validate governance structure
+        run: python governance/scripts/validate-governance-structure.py --verbose
+
+      - name: Validate governance matrix
+        run: make validate-governance-ci
+
+      - name: Validate AI Behavior Contract (PR body)
+        if: github.event_name == 'pull_request'
+        run: |
+          .github/scripts/validate-ai-response.sh "${{ github.event.pull_request.body || 'CAN_COMPLETE: build validation pipeline' }}"
+
+      - name: Governance summary
+        run: echo "Governance validation completed" >> $GITHUB_STEP_SUMMARY
+
+  summarize:
+    needs: [lint-and-validate, tests, build-matrix, governance]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish pipeline summary
+        run: |
+          echo "## Governed Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint and validation: ${{ needs.lint-and-validate.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Tests: ${{ needs.tests.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build: ${{ needs.build-matrix.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Governance: ${{ needs.governance.result }}" >> $GITHUB_STEP_SUMMARY
