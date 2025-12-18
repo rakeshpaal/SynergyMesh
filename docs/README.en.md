@@ -64,6 +64,8 @@ platform that integrates three core subsystems:
 
 ## 🗺️ Technical Roadmap
 
+Phases 4 → 6 are a single continuum: Phase 4 productionized the stack; Phase 5 hardens it for enterprise use (multi-tenancy/HA/IAM/cost/SLA); Phase 6 layers ecosystem expansion on top of the Phase 5 baselines (marketplace, third-party integrations, SaaS, training, community).
+
 ### ✅ Phase 4: Productionization & Scale (instant, unscheduled)
 
 - [x] Island AI Stage 2-4 (collaboration, self-learning, production)
