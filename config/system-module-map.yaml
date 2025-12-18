@@ -78,7 +78,7 @@ root_directory_restructuring:
     - conflict: "config/ vs .config/"
       recommendation: "Rename config/ to app-configs/ for clarity"
       rationale: "Distinguish application configs from tool/test configs"
-    - conflict: "infra/ vs infrastructure/"
+    - conflict: "src/autonomous/infrastructure/ vs infrastructure/"
       recommendation: "Consolidate to infrastructure/"
       rationale: "Avoid functional overlap"
 

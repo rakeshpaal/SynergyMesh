@@ -108,7 +108,7 @@ root_directory_restructuring_plan:
       status: "planning"
     
     infrastructure_conflict:
-      issue: "infra/ and infrastructure/ functional overlap"
+      issue: "src/autonomous/infrastructure/ and infrastructure/ functional overlap"
       recommendation: "Consolidate to infrastructure/"
       status: "planning"
   
