@@ -92,7 +92,11 @@ jobs:
       - name: 📦 Install Dependencies
         run: |
           npm ci || npm install --legacy-peer-deps
-          pip install -r requirements-workflow.txt || echo "No Python requirements"
+          if [ -f requirements-workflow.txt ]; then
+            pip install -r requirements-workflow.txt
+          else
+            echo "No requirements file found"
+          fi
       
       - name: 🔍 Analyze Code Changes
         id: failure_analysis
@@ -129,9 +133,9 @@ jobs:
           PERF_CHANGES=$(echo "$CHANGED_FILES" | grep -iE "(performance|benchmark)" | wc -l || echo 0)
           MEMORY_CHANGES=$(echo "$CHANGED_FILES" | grep -iE "(memory|heap|buffer)" | wc -l || echo 0)
           
-          # Calculate risk score (0.0 to 1.0)
+          # Calculate risk score (0.0 to 1.0) using awk instead of bc
           TOTAL_CHANGES=$(echo "$CHANGED_FILES" | wc -l || echo 1)
-          RISK_SCORE=$(echo "scale=2; ($SECURITY_CHANGES * 3 + $DOCKER_CHANGES * 2 + $TEST_CHANGES * 1.5 + $PERF_CHANGES * 1.5 + $MEMORY_CHANGES * 2) / ($TOTAL_CHANGES * 10)" | bc -l || echo "0.0")
+          RISK_SCORE=$(awk "BEGIN {printf \"%.2f\", ($SECURITY_CHANGES * 3 + $DOCKER_CHANGES * 2 + $TEST_CHANGES * 1.5 + $PERF_CHANGES * 1.5 + $MEMORY_CHANGES * 2) / ($TOTAL_CHANGES * 10)}" || echo "0.0")
           
           # Build predictions JSON
           PREDICTIONS=$(cat <<EOF
@@ -269,15 +273,19 @@ jobs:
         continue-on-error: true
         run: |
           echo "Running linters..."
-          npm run lint 2>&1 | tee lint-output.txt || true
+          npm run lint 2>&1 | tee lint-output.txt
+          LINT_EXIT=$?
           
-          if [ $? -eq 0 ]; then
+          if [ $LINT_EXIT -eq 0 ]; then
             echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             echo "Attempting auto-fix..."
-            npm run lint -- --fix || true
-            echo "status=fixed" >> $GITHUB_OUTPUT
+            if npm run lint -- --fix 2>&1 | tee -a lint-output.txt; then
+              echo "status=fixed" >> $GITHUB_OUTPUT
+            else
+              echo "status=failure" >> $GITHUB_OUTPUT
+            fi
           fi
       
       - name: 🧪 Run Tests
@@ -285,9 +293,10 @@ jobs:
         continue-on-error: true
         run: |
           echo "Running tests..."
-          npm test 2>&1 | tee test-output.txt || true
+          npm test 2>&1 | tee test-output.txt
+          TEST_EXIT=$?
           
-          if [ $? -eq 0 ]; then
+          if [ $TEST_EXIT -eq 0 ]; then
             echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
@@ -298,9 +307,10 @@ jobs:
         continue-on-error: true
         run: |
           echo "Building project..."
-          npm run build 2>&1 | tee build-output.txt || true
+          npm run build 2>&1 | tee build-output.txt
+          BUILD_EXIT=$?
           
-          if [ $? -eq 0 ]; then
+          if [ $BUILD_EXIT -eq 0 ]; then
             echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
