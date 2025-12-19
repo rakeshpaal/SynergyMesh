@@ -200,32 +200,59 @@ lineage:
 
 ## 目錄結構 (Directory Structure)
 
+### DAR-First 知識庫架構 🆕
+
+99-元數據採用 **DAR-First** (Decision, Action, Reasoning) 架構，將知識庫從「資產中心」重新定位為「治理中心」。
+
+詳細架構文檔請參閱：[DAR_FIRST_ARCHITECTURE.md](./DAR_FIRST_ARCHITECTURE.md)
+
 ```
-metadata/
-├── provenance/                    # 數據溯源
-│   ├── workflow-evidence.schema.json
-│   └── policy-attestations.schema.json
-├── schemas/                       # 元數據模式
-│   ├── data-catalog.schema.json
-│   └── lineage.schema.json
-├── catalog/                       # 數據目錄
-│   ├── datasets/
-│   ├── policies/
-│   └── services/
-├── lineage/                       # 數據血緣
-│   ├── extractors/
-│   └── visualizations/
-└── knowledge/                     # 活體知識庫
-    ├── runtime/                   # 操作知識的程式碼
-    │   ├── build_mndoc.py
-    │   ├── build_knowledge_graph.py
-    │   ├── project_superroot.py
-    │   └── diagnose_health.py
-    ├── pipelines/                 # 完整活體流程
-    │   └── update_knowledge_layer.py
-    └── contracts/                 # 機器可讀合約
-        └── living-knowledge-contract.yaml
+src/governance/dimensions/99-metadata/
+├── knl-pack/                          # Knowledge Pack (DAR-First) 🆕
+│   │
+│   ├── governance/                    ⭐ 層級 1：治理決策層
+│   │   ├── index.json                 # 全局治理索引
+│   │   ├── dag.graphml                # 治理 DAG
+│   │   ├── policies.rego              # 合規規則
+│   │   └── trust-chain.json           # 證據鏈 + 審計
+│   │
+│   ├── reasoning/                     ⭐ 層級 2：DAR 推理層
+│   │   ├── dar-protocol.json          # DAR 任務定義
+│   │   ├── tasks/                     # 推理任務模板
+│   │   │   ├── diagnose.yaml          # 診斷問題
+│   │   │   ├── refactor.yaml          # 結構優化
+│   │   │   ├── repair.yaml            # 自動修復
+│   │   │   └── align.yaml             # 治理對齊
+│   │   └── rules/                     # 推理規則庫
+│   │
+│   ├── retrieval/                     ⭐ 層級 3：RAG + 向量工具層
+│   │   ├── vector-index/              # 多維向量索引
+│   │   ├── rag-config.json            # RAG 配置
+│   │   └── semantic-search.yaml       # 語義搜尋
+│   │
+│   ├── artifacts/                     ⭐ 層級 4：資料平面
+│   │   ├── schema/                    # 本體、約束
+│   │   ├── config/                    # 配置
+│   │   ├── models/                    # 模型
+│   │   └── pipelines/                 # 流程圖
+│   │
+│   └── automation/                    ⭐ 層級 5：閉環執行層
+│       ├── events.yaml                # 事件驅動規則
+│       ├── guardians.yaml             # 守護欄
+│       ├── rollback.yaml              # 回滾策略
+│       └── ci-integration.yaml        # CI/GitOps 集成
+│
+├── examples/                          # 使用範例（整合至 artifacts/）
+├── tests/                             # OPA 測試
+└── README.md                          # 本文檔
 ```
+
+**五層架構優先級：**
+1. **Governance**: 決策、規則、信任鏈（DAR 的目標和約束）
+2. **Reasoning**: DAR 任務、推理規則（DAR 的大腦）
+3. **Retrieval**: 向量索引、RAG 配置（DAR 的工具）
+4. **Artifacts**: Schema、Config、Models（被治理的對象）
+5. **Automation**: 事件、守護欄、回滾（DAR 的執行層）
 
 ---
 
@@ -451,12 +478,22 @@ dependencies:
 
 ## 相關鏈接 (Related Links)
 
+### 核心架構文檔
+- **[DAR-First 架構](./DAR_FIRST_ARCHITECTURE.md)** 🆕 - 完整的 DAR-First 知識庫架構說明
+- **[整合指南](./INTEGRATION.md)** - 與其他維度和系統的整合方法
+- [活體知識庫設計](/docs/architecture/components/LIVING_KNOWLEDGE_BASE.md) - 架構設計文檔
+- [知識庫文檔](/docs/LIVING_KNOWLEDGE_BASE.md) - 詳細文檔
+
+### 相關治理維度
 - [數據治理框架](../10-policy/README.md) - 策略管理中心
 - [血緣治理](../61-lineage/README.md) - 血緣追踪維度
 - [溯源治理](../62-provenance/README.md) - 溯源管理維度
 - [審計軌跡](../70-audit-trail/README.md) - 審計追踪維度
-- [活體知識庫設計](/docs/architecture/components/LIVING_KNOWLEDGE_BASE.md) - 架構設計文檔
-- [知識庫文檔](/docs/LIVING_KNOWLEDGE_BASE.md) - 詳細文檔
+
+### DAR 實戰場景
+- **P0 優先**: 自動補全 metadata（owner、domain、sla）- 最快見效
+- **P1 推薦**: 自動修復命名不一致 - 驗證完整 DAR 流程
+- **P2 進階**: 自動偵測治理 DAG 循環 - 結構驗證
 
 ---
 
