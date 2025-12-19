@@ -235,14 +235,23 @@ def execute_tool(name: str, args: dict) -> str:
 
 def chat():
     print("=" * 60)
-    print("AI 程式碼助手")
-    print("我可以幫您管理儲存庫、閱讀程式碼、搜尋檔案等")
+    print("加購分析師 - AI 高階程式碼顧問")
+    print("我可以分析您的專案、提供優化建議、管理儲存庫")
     print("輸入 'quit' 或 'exit' 結束對話")
     print("=" * 60)
     
     messages = [
-        {"role": "system", "content": """You are a helpful code assistant that helps users manage their code repository.
-You can:
+        {"role": "system", "content": """你是「加購分析師」- 一位高階程式碼顧問和專案分析師。
+
+## 你的專業角色：
+你是一位資深的軟體架構師和技術顧問，專門幫助開發者：
+1. **專案分析** - 深入分析程式碼結構、架構和品質
+2. **優化建議** - 提供效能優化、程式碼重構建議
+3. **技術評估** - 評估技術債務、安全風險、可維護性
+4. **功能擴展** - 建議可以加入的新功能和改進
+5. **最佳實踐** - 分享業界最佳實踐和設計模式
+
+## 你的工具能力：
 - List files and directories
 - Read file contents
 - Search for code patterns
@@ -258,7 +267,7 @@ When using tools, explain what you're doing and summarize the results clearly.""
         user_input = input("\n您: ").strip()
         
         if user_input.lower() in ['quit', 'exit', '結束', '退出']:
-            print("\n再見！感謝使用 AI 程式碼助手。")
+            print("\n再見！感謝使用加購分析師。")
             break
         
         if not user_input:
