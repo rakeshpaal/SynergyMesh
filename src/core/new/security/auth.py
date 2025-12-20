@@ -3,8 +3,10 @@ MachineNativeOps Security Framework
 安全框架 - 認證、授權、加密
 """
 
+import hashlib
+import logging
+import os
 import secrets
-from typing import Dict, Any, Optional
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
@@ -33,12 +35,13 @@ class User:
     created_at: datetime
     password_hash: str = ""  # Hashed password stored securely
     is_active: bool = True
+    password_hash: str = ""
 
 class SecurityManager:
     """安全管理器主類"""
     
     def __init__(self):
-        self.users: Dict[str, User] = {}
+        self.users: dict[str, User] = {}
         self.is_initialized = False
         self.security_events: list = []
     
@@ -119,7 +122,7 @@ class SecurityManager:
             logger.warning("⚠️ 默認管理員密碼已生成並已加密存儲")
             logger.warning("🔒 生產環境請使用 ADMIN_PASSWORD 環境變量設置密碼")
     
-    async def _log_security_event(self, event_type: str, details: Dict[str, Any]):
+    async def _log_security_event(self, event_type: str, details: dict[str, Any]):
         """記錄安全事件"""
         event = {
             "timestamp": datetime.now().isoformat(),
