@@ -72,7 +72,7 @@ class RealTimeMonitor:
         self.metrics_store: Dict[str, deque] = defaultdict(lambda: deque(maxlen=1000))
         self.alerts: List[Alert] = []
         self.active_sessions: Dict[str, datetime] = {}
-        self.metrics_count: Dict[str, int] = defaultdict(int)  # 追蹤每個會話的指標數量
+        self.metrics_count: Dict[str, int] = defaultdict(int)  # Track metrics count per session
         
         # 監控配置
         self.metrics_interval = self.config.get("metrics_interval", 30)  # 秒
@@ -317,7 +317,8 @@ class RealTimeMonitor:
                         matched_session = session_id
                         max_length = len(session_id)
                 if matched_session:
-                    self.metrics_count[matched_session] -= diff
+                    # Protect against negative counters
+                    self.metrics_count[matched_session] = max(0, self.metrics_count[matched_session] - diff)
         
         # 清理舊警報
         self.alerts = [a for a in self.alerts if a.timestamp > cutoff_time]
