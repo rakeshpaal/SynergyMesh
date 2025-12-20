@@ -55,7 +55,7 @@ async function resolveSafePath(userInputPath: string): Promise<string> {
     canonicalSafeRoot.endsWith(path.sep) ? canonicalSafeRoot : canonicalSafeRoot + path.sep;
 
   // Always resolve user input relative to the canonical safe root.
-  const resolvedCandidate = path.resolve(canonicalSafeRootWithSep, normalizedInput);
+  const resolvedCandidate = path.resolve(canonicalSafeRoot, normalizedInput);
 
   // Canonicalize the candidate to resolve any symlinks.
   const canonicalPath = await realpath(resolvedCandidate);
