@@ -116,10 +116,13 @@ class CodeRunner(Tool):
 
         normalized = os.path.realpath(working_dir)
         if not self.config.allowed_paths:
-            raise ValueError("Working directory requires an allowlist; configure allowed_paths.")
+            raise ValueError(
+                f"Working directory '{normalized}' requires an allowlist; configure allowed_paths."
+            )
 
-        for allowed in self.config.allowed_paths:
-            base = os.path.realpath(allowed)
+        allowed_roots = [os.path.realpath(allowed) for allowed in self.config.allowed_paths]
+
+        for base in allowed_roots:
             try:
                 if os.path.commonpath([normalized, base]) == base:
                     return normalized
@@ -127,10 +130,9 @@ class CodeRunner(Tool):
                 # Paths on different drives (e.g., Windows); treat as not allowed
                 continue
 
-            if normalized == base or normalized.startswith(base + os.sep):
-                return normalized
-
-        raise ValueError("Working directory is not allowed")
+        raise ValueError(
+            f"Working directory '{normalized}' is not allowed; allowed roots: {allowed_roots}"
+        )
 
     def _build_execution_command(self, lang_config: dict[str, str], temp_file: str) -> list[str]:
         """
