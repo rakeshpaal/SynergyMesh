@@ -10,14 +10,13 @@ import secrets
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, Optional
+import logging
+from passlib.context import CryptContext
 
 logger = logging.getLogger(__name__)
 
-# 密碼哈希安全參數
-PBKDF2_SALT_LENGTH = 32  # bytes
-PBKDF2_ITERATIONS = 100000  # OWASP recommended minimum
-DEFAULT_PASSWORD_LENGTH = 24  # characters for token_urlsafe
+# Password hashing context using bcrypt
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class Permission(Enum):
     """權限枚舉"""
@@ -34,6 +33,7 @@ class User:
     username: str
     email: str
     created_at: datetime
+    password_hash: str = ""  # Hashed password stored securely
     is_active: bool = True
     password_hash: str = ""
 
@@ -45,24 +45,17 @@ class SecurityManager:
         self.is_initialized = False
         self.security_events: list = []
     
-    @staticmethod
-    def _hash_password(password: str) -> str:
-        """使用 PBKDF2 對密碼進行哈希處理"""
-        salt = secrets.token_bytes(PBKDF2_SALT_LENGTH)
-        pwdhash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, PBKDF2_ITERATIONS)
-        return salt.hex() + ':' + pwdhash.hex()
+    def _hash_password(self, password: str) -> str:
+        """對密碼進行哈希處理"""
+        if password is None or not password:
+            raise ValueError("Password cannot be empty or None")
+        return pwd_context.hash(password)
     
-    @staticmethod
-    def _verify_password(stored_password: str, provided_password: str) -> bool:
-        """驗證密碼"""
-        try:
-            salt_hex, pwdhash_hex = stored_password.split(':')
-            salt = bytes.fromhex(salt_hex)
-            stored_hash = bytes.fromhex(pwdhash_hex)
-            pwdhash = hashlib.pbkdf2_hmac('sha256', provided_password.encode('utf-8'), salt, PBKDF2_ITERATIONS)
-            return pwdhash == stored_hash
-        except (ValueError, AttributeError):
+    def _verify_password(self, plain_password: str, hashed_password: str) -> bool:
+        """驗證密碼是否匹配哈希值"""
+        if plain_password is None or hashed_password is None or not plain_password or not hashed_password:
             return False
+        return pwd_context.verify(plain_password, hashed_password)
     
     async def initialize(self):
         """初始化安全管理器"""
@@ -78,7 +71,7 @@ class SecurityManager:
         logger.info("✅ 安全管理器初始化完成")
     
     async def authenticate_user(self, username: str, password: str) -> Optional[str]:
-        """認證用戶"""
+        """認證用戶 - 使用安全的密碼哈希驗證"""
         user = None
         for u in self.users.values():
             if u.username == username and u.is_active:
@@ -89,8 +82,8 @@ class SecurityManager:
             logger.warning(f"⚠️ 用戶不存在: {username}")
             return None
         
-        # 驗證密碼哈希格式並進行驗證
-        if user.password_hash and ':' in user.password_hash and self._verify_password(user.password_hash, password):
+        # 使用bcrypt驗證密碼哈希
+        if self._verify_password(password, user.password_hash):
             token = f"token_{secrets.token_hex(16)}"
             await self._log_security_event("user_authenticated", {
                 "username": username,
@@ -102,44 +95,32 @@ class SecurityManager:
         return None
     
     async def _create_default_admin(self):
-        """創建默認管理員"""
+        """創建默認管理員 - 使用安全的密碼哈希"""
         if not self.users:
-            # 優先從環境變量讀取密碼，否則生成隨機密碼
-            default_password = os.environ.get('ADMIN_DEFAULT_PASSWORD')
-            password_from_env = default_password is not None
-            
+            # 生成安全的隨機密碼並進行哈希處理
+            # 優先從環境變量讀取管理員密碼（生產環境）
+            import os
+            default_password = os.environ.get('ADMIN_PASSWORD')
             if not default_password:
-                default_password = secrets.token_urlsafe(DEFAULT_PASSWORD_LENGTH)
+                # 僅在開發環境生成隨機密碼
+                default_password = secrets.token_urlsafe(32)
+                logger.warning("⚠️ 使用隨機生成的管理員密碼（僅限開發環境）")
+            else:
+                logger.info("✅ 從環境變量載入管理員密碼")
+            
+            password_hash = self._hash_password(default_password)
             
             admin_user = User(
                 id="admin_001",
                 username="admin",
                 email="admin@mynativeops.ai",
                 created_at=datetime.now(),
-                password_hash=self._hash_password(default_password)
+                password_hash=password_hash
             )
             self.users[admin_user.id] = admin_user
             logger.info("👑 創建默認管理員用戶")
-            
-            if password_from_env:
-                logger.info("✅ 使用環境變量 ADMIN_DEFAULT_PASSWORD 設置的管理員密碼")
-            else:
-                # 出於安全考量，不再在控制台輸出明文密碼
-                print(f"\n{'='*60}")
-                print(f"🔐 默認管理員密碼已生成")
-                print(f"用戶名: admin")
-                print(f"⚠️  出於安全考量，默認密碼不會在日誌或控制台中顯示，請使用安全流程重置或查詢該密碼。")
-                print(f"⚠️  請在首次登入後立即修改此密碼！")
-                print(f"{'='*60}\n")
-                
-                logger.warning("⚠️ 默認管理員密碼已生成，未在控制台輸出明文，請通過安全流程獲取並立即修改")
-                # 記錄密碼生成事件但不包含密碼本身
-                await self._log_security_event("admin_password_generated", {
-                    "username": "admin",
-                    "timestamp": datetime.now().isoformat(),
-                    "source": "environment_variable" if password_from_env else "auto_generated",
-                    "warning": "請立即修改此密碼"
-                })
+            logger.warning("⚠️ 默認管理員密碼已生成並已加密存儲")
+            logger.warning("🔒 生產環境請使用 ADMIN_PASSWORD 環境變量設置密碼")
     
     async def _log_security_event(self, event_type: str, details: dict[str, Any]):
         """記錄安全事件"""
