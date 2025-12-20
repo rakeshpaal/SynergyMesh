@@ -75,6 +75,7 @@
 - **相關連結**：`docker-compose.prod.yml`、`deploy/docker/`
 
 ### docs/
+
 - **一句話摘要**：全域文檔與治理說明集合。
 - **我不確定/待釐清**：哪些生成檔案需重新產出。
 - **相關連結**：`docs/DIRECTORY.md`、`Makefile`
