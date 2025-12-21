@@ -14,6 +14,7 @@ import hashlib
 import secrets
 import logging
 from urllib.parse import urlencode, urlparse
+import jwt as pyjwt
 
 from enterprise.iam.models import (
     User,
@@ -371,10 +372,12 @@ class SSOManager:
         )
 
         # Validate ID token nonce to prevent replay attacks
-        import jwt as pyjwt
+        # TODO: Implement full JWT signature verification with JWKS
+        # Currently only validating nonce claim without signature verification
+        # This is a security limitation that should be addressed before production
         try:
             # Decode without verification to extract nonce claim
-            # Full signature verification should be done with JWKS in production
+            # SECURITY WARNING: Signature verification is disabled
             id_token_claims = pyjwt.decode(
                 tokens.id_token,
                 options={"verify_signature": False}
