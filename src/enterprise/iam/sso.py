@@ -386,7 +386,7 @@ class SSOManager:
                 raise ValueError("Missing nonce claim in ID token")
             if token_nonce != nonce:
                 raise ValueError("Nonce mismatch in ID token - possible replay attack")
-        except jwt.DecodeError as e:
+        except jwt.PyJWTError as e:
             raise ValueError(f"Failed to decode ID token: {e}")
 
         # Get user info
