@@ -113,7 +113,7 @@ class SuperAgent:
         
     def generate_trace_id(self) -> str:
         """Generate unique trace ID"""
-        return f"axm-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4()}"
+        return f"mno-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4()}"
     
     def generate_span_id(self) -> str:
         """Generate unique span ID"""
