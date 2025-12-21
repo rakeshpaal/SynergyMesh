@@ -1,4 +1,3 @@
-# AGENTS 状态标记规范
 # AGENTS 狀態標記規範
 
 本文件記錄所有 AI 代理在專案中使用的狀態標記（Status Marker）的約定。
@@ -22,6 +21,8 @@
    - 若任務失敗，所有相關審核項都應標記為 ❌
 
 ## PR 模板規範
+
+
 - 使用標準化狀態標記：✅ (Complete), ⏸️ (Blocked), 🔄 (In Progress), ❌ (Failed), ⏭️ (Skipped)
 - 確保狀態與清單進度一致：status ≡ checklist progress
 - 所有變更必須先更新治理文件再實施
