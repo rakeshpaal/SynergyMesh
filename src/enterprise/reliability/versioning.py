@@ -56,10 +56,80 @@ class SemanticVersion:
         return version
 
     def __lt__(self, other: "SemanticVersion") -> bool:
-        return (self.major, self.minor, self.patch) < (other.major, other.minor, other.patch)
+        # Compare major.minor.patch first
+        if (self.major, self.minor, self.patch) != (other.major, other.minor, other.patch):
+            return (self.major, self.minor, self.patch) < (other.major, other.minor, other.patch)
+        
+        # If major.minor.patch are equal, handle prerelease versions
+        # According to SemVer 2.0.0:
+        # - A prerelease version has lower precedence than a normal version
+        # - When both have prereleases, compare them lexicographically
+        
+        # Normal version (no prerelease) has higher precedence
+        if not self.prerelease and not other.prerelease:
+            return False  # Equal versions
+        if not self.prerelease:
+            return False  # self (normal) > other (prerelease)
+        if not other.prerelease:
+            return True  # self (prerelease) < other (normal)
+        
+        # Both have prereleases - compare them according to SemVer spec
+        return self._compare_prerelease(self.prerelease, other.prerelease) < 0
 
     def __eq__(self, other: "SemanticVersion") -> bool:
-        return (self.major, self.minor, self.patch) == (other.major, other.minor, other.patch)
+        return (
+            (self.major, self.minor, self.patch) == (other.major, other.minor, other.patch)
+            and self.prerelease == other.prerelease
+        )
+    
+    @staticmethod
+    def _compare_prerelease(pre1: str, pre2: str) -> int:
+        """
+        Compare two prerelease version strings according to SemVer 2.0.0 spec.
+        
+        Returns:
+            -1 if pre1 < pre2
+            0 if pre1 == pre2
+            1 if pre1 > pre2
+        """
+        # Split by dots to get identifiers
+        parts1 = pre1.split('.')
+        parts2 = pre2.split('.')
+        
+        # Compare each identifier
+        for i in range(max(len(parts1), len(parts2))):
+            # A larger set of pre-release fields has higher precedence
+            if i >= len(parts1):
+                return -1
+            if i >= len(parts2):
+                return 1
+            
+            part1 = parts1[i]
+            part2 = parts2[i]
+            
+            # Check if parts are numeric
+            is_num1 = part1.isdigit()
+            is_num2 = part2.isdigit()
+            
+            if is_num1 and is_num2:
+                # Both numeric - compare as integers
+                cmp = int(part1) - int(part2)
+                if cmp != 0:
+                    return -1 if cmp < 0 else 1
+            elif is_num1:
+                # Numeric identifiers have lower precedence than non-numeric
+                return -1
+            elif is_num2:
+                # Non-numeric has higher precedence than numeric
+                return 1
+            else:
+                # Both non-numeric - compare lexically
+                if part1 < part2:
+                    return -1
+                elif part1 > part2:
+                    return 1
+        
+        return 0  # Equal
 
     @classmethod
     def parse(cls, version_string: str) -> "SemanticVersion":
