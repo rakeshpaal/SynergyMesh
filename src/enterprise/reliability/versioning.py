@@ -14,7 +14,9 @@ import re
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any
+import re
+import logging
+
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +37,6 @@ class CompatibilityLevel(Enum):
     NONE = "none"              # Not compatible
 
 
-@functools.total_ordering
 @dataclass
 class SemanticVersion:
     """Semantic version (SemVer)"""
@@ -76,6 +77,15 @@ class SemanticVersion:
 
     def __le__(self, other: "SemanticVersion") -> bool:
         return (self.major, self.minor, self.patch) <= (other.major, other.minor, other.patch)
+
+    def __le__(self, other: "SemanticVersion") -> bool:
+        return (self.major, self.minor, self.patch) <= (other.major, other.minor, other.patch)
+
+    def __gt__(self, other: "SemanticVersion") -> bool:
+        return (self.major, self.minor, self.patch) > (other.major, other.minor, other.patch)
+
+    def __ge__(self, other: "SemanticVersion") -> bool:
+        return (self.major, self.minor, self.patch) >= (other.major, other.minor, other.patch)
 
     def __eq__(self, other: "SemanticVersion") -> bool:
         return (
