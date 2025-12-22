@@ -26,7 +26,7 @@ This issue has been successfully resolved with minimal, surgical changes.
 
 **Key Improvements**:
 - Uses `npm ci` for reproducible builds
-- 3-attempt retry logic for network resilience
+- 3-attempt retry logic for all npm ci operations (network resilience)
 - Proper npm cache configuration
 - Non-blocking optional steps
 - Detailed reporting at each stage

@@ -8,6 +8,7 @@ on:
   push:
     branches: [main, develop]
   pull_request:
+    types: [opened, synchronize, reopened]
     branches: [main, develop]
   workflow_dispatch:
 
@@ -55,7 +56,24 @@ jobs:
       - name: "📦 Install dependencies"
         run: |
           echo "🔧 Installing dependencies for Contracts L1 Service..."
-          npm ci --prefer-offline --no-audit
+          max_retries=3
+          delay_seconds=5
+          attempt=1
+          while [ "$attempt" -le "$max_retries" ]; do
+            echo "📦 npm ci attempt $attempt of $max_retries..."
+            if npm ci --prefer-offline --no-audit; then
+              echo "✅ npm ci succeeded on attempt $attempt."
+              break
+            fi
+            if [ "$attempt" -lt "$max_retries" ]; then
+              echo "⚠️ npm ci failed on attempt $attempt. Retrying in ${delay_seconds}s..."
+              sleep "$delay_seconds"
+            else
+              echo "❌ npm ci failed after $max_retries attempts."
+              exit 1
+            fi
+            attempt=$((attempt + 1))
+          done
           
       - name: "🔍 驗證依賴安裝"
         run: |
@@ -158,6 +176,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
+          cache-dependency-path: ${{ matrix.workspace }}/package-lock.json
 
       - name: "📦 安裝工作區依賴"
         working-directory: ${{ matrix.workspace }}
@@ -235,8 +254,24 @@ jobs:
 
       - name: "📦 安裝根依賴"
         run: |
-          echo "🔧 Installing root dependencies..."
-          npm install --prefer-offline
+          echo "🔧 Installing root dependencies (using npm ci with retries)..."
+          attempt=1
+          max_attempts=3
+          until [ "$attempt" -gt "$max_attempts" ]
+          do
+            echo "➡️  npm ci attempt $attempt/$max_attempts..."
+            if npm ci --prefer-offline; then
+              echo "✅ npm ci completed successfully on attempt $attempt."
+              break
+            fi
+            if [ "$attempt" -eq "$max_attempts" ]; then
+              echo "❌ npm ci failed after $max_attempts attempts."
+              exit 1
+            fi
+            attempt=$((attempt + 1))
+            echo "🔁 npm ci failed, retrying in 5 seconds..."
+            sleep 5
+          done
           
       - name: "📦 安裝所有工作區"
         run: |
@@ -362,7 +397,7 @@ jobs:
   pipeline-summary:
     name: "📋 Pipeline Summary"
     runs-on: ubuntu-latest
-    needs: [tier1-contracts-l1-service, tier2-workspace-services, integration-tests, deployment-preparation]
+    needs: [tier1-contracts-l1-service, tier2-workspace-services, integration-tests]
     if: always()
     
     steps:
@@ -418,9 +453,7 @@ jobs:
           cat pipeline-summary.md
           
       - name: "📢 評論 PR（如果失敗）"
-        if: |
-          github.event_name == 'pull_request' && 
-          (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled'))
+        if: ${{ github.event_name == 'pull_request' && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')) }}
         uses: actions/github-script@v7
         with:
           script: |
