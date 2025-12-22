@@ -26,6 +26,7 @@ from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 import uvicorn
+from gate_handler import gate_handler
 
 # Local imports
 from config import settings
@@ -119,53 +120,19 @@ class SuperAgentCore:
             MessageType.FIX_PROPOSAL: self.handle_fix_proposal,
             MessageType.VERIFICATION_REPORT: self.handle_verification_report,
             MessageType.EXECUTION_RESULT: self.handle_execution_result,
-            MessageType.CONSENSUS_VOTE: self.handle_consensus_vote,
-            MessageType.HEARTBEAT: self.handle_heartbeat,
+            MessageType.GATE_VALIDATION_REQUEST: self.handle_gate_validation_request,
         }
-
-        # Startup tracking
-        self._start_time = datetime.now()
-
-    async def initialize(self) -> None:
-        """Initialize async components."""
-        await self.event_store.initialize()
-
-        # Log startup
-        await self.audit_trail.log(
-            action=AuditAction.SYSTEM_STARTUP,
-            actor="super-agent",
-            details={
-                "version": settings.service_version,
-                "namespace": settings.namespace,
-                "pod_name": settings.pod_name,
-            },
-        )
-
-        logger.info(
-            "SuperAgent initialized",
-            version=settings.service_version,
-            namespace=settings.namespace,
-        )
-
-    async def shutdown(self) -> None:
-        """Cleanup on shutdown."""
-        await self.audit_trail.log(
-            action=AuditAction.SYSTEM_SHUTDOWN,
-            actor="super-agent",
-            details={"uptime_seconds": self.metrics.get_uptime()},
-        )
-
-        await self.agent_client.close()
-        await self.event_store.close()
-
-        logger.info("SuperAgent shutdown complete")
-
-    def validate_message_envelope(self, envelope: MessageEnvelope) -> tuple[bool, Optional[str]]:
-        """
-        Validate message envelope structure and required fields.
-
-        Returns (is_valid, error_message).
-        """
+        
+    def generate_trace_id(self) -> str:
+        """Generate unique trace ID"""
+        return f"mno-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4()}"
+    
+    def generate_span_id(self) -> str:
+        """Generate unique span ID"""
+        return str(uuid.uuid4())
+    
+    def validate_message_envelope(self, envelope: MessageEnvelope) -> bool:
+        """Validate message envelope structure and required fields"""
         try:
             meta = envelope.meta
             context = envelope.context
@@ -921,36 +888,24 @@ async def get_audit_entries(
         "limit": limit,
     }
 
-
-@app.get("/audit/integrity")
-async def verify_audit_integrity():
-    """Verify audit trail integrity."""
-    if not super_agent:
-        raise HTTPException(status_code=503, detail="Service not ready")
-
-    return await super_agent.audit_trail.verify_integrity()
-
-
-@app.get("/status")
-async def get_status():
-    """Get comprehensive system status."""
-    if not super_agent:
-        raise HTTPException(status_code=503, detail="Service not ready")
-
-    return {
-        **super_agent.get_status_summary(),
-        "incidents": await super_agent.state_machine.get_statistics(),
-        "consensus": await super_agent.consensus.get_statistics(),
-        "event_store": await super_agent.event_store.get_statistics(),
-        "audit": await super_agent.audit_trail.get_statistics(),
-    }
-
+    def handle_gate_validation_request(self, envelope: MessageEnvelope) -> Dict[str, Any]:
+        """Handle gate validation requests"""
+        try:
+            request_data = envelope.payload
+            return asyncio.run(gate_handler.handle_gate_validation_request(request_data))
+        except Exception as e:
+            logger.error(f"Gate validation request failed: {e}")
+            return {
+                "status": "FAILED",
+                "error": str(e),
+                "timestamp": datetime.now().isoformat()
+            }
 
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
-        host=settings.host,
-        port=settings.port,
+        host="0.0.0.0",
+        port=8082,  # Updated to match unified gates workflow
         reload=True,
         log_level=settings.log_level.lower(),
     )

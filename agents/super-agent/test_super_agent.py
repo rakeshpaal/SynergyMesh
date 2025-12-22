@@ -81,7 +81,7 @@ class SuperAgentTester:
     def generate_test_message(self, message_type: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Generate a test message with proper envelope"""
         import uuid
-        trace_id = f"axm-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4()}"
+        trace_id = f"mno-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4()}"
         
         return {
             "meta": {
@@ -94,7 +94,7 @@ class SuperAgentTester:
                 "schema_version": "v1.0.0"
             },
             "context": {
-                "namespace": "axiom-system",
+                "namespace": "machinenativenops-system",
                 "cluster": "test-cluster",
                 "urgency": "P1"
             },
@@ -167,7 +167,7 @@ class SuperAgentTester:
                     # Missing required fields
                 },
                 "context": {
-                    "namespace": "axiom-system"
+                    "namespace": "machinenativenops-system"
                 },
                 "payload": {}
             }
