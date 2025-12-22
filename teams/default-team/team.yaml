@@ -15,7 +15,7 @@ activation:
 members:
   - role: "orchestrator"
     agent_id: "core.orchestrator"
-    source: "agents/super-agent"
+    source: "teams/default-team/orchestrator"
     language: "python"
 
   - role: "architect"

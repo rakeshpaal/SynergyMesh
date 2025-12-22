@@ -10,7 +10,7 @@ agents:
     name: "SuperAgent Orchestrator"
     type: "orchestrator"
     language: "python"
-    source: "agents/super-agent"
+    source: "teams/default-team/orchestrator"
     entry_point: "main.py"
     capabilities:
       - orchestration
