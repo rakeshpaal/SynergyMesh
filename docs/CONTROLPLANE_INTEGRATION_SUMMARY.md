@@ -364,6 +364,7 @@ git commit -m "Add feature"  # Pre-commit 自動驗證
 Controlplane 已經從「華麗的擺設」轉變為「實用的工具」：
 
 ### 之前 ❌
+
 - 配置文件存在但無法使用
 - 沒有工具訪問配置
 - 沒有自動化整合
