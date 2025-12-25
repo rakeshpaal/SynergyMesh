@@ -86,27 +86,21 @@ cp_get_yaml_value() {
 import sys
 import yaml
 
+yaml_file, key_path, default_value = sys.argv[1], sys.argv[2], sys.argv[3]
+
 try:
-    with open('${yaml_file}', 'r') as f:
+    with open(yaml_file, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
-    keys = '${key_path}'.split('.')
-    with open(sys.argv[1], 'r') as f:
-        data = yaml.safe_load(f)
-    keys = sys.argv[2].split('.')
     value = data
-    for key in keys:
+    for key in key_path.split('.'):
         if isinstance(value, dict):
             value = value.get(key)
         else:
             value = None
             break
-    print(value if value is not None else '${default_value}')
-except:
-    print('${default_value}')
-"
-    print(value if value is not None else sys.argv[3])
+    print(default_value if value is None else value)
 except Exception:
-    print(sys.argv[3])
+    print(default_value)
 PY
         return 0
     fi
@@ -167,22 +161,16 @@ cp_validate_name() {
     
     case "$name_type" in
         file)
-            # 檢查 kebab-case 和擴展名
-            if [[ ! "$name" =~ ^[a-z][a-z0-9-]*(\.[a-z0-9]+)*$ ]]; then
-                cp_log_error "File name must be kebab-case: $name"
+            # 檢查 kebab-case，允許以點分段的名稱
+            if [[ ! "$name" =~ ^[a-z][a-z0-9-]*(\.[a-z0-9-]+)*$ ]]; then
+                cp_log_error "File name must be kebab-case (dots allowed as segments): $name"
                 return 1
             fi
             
-            # 檢查雙重擴展名
-            local dot_count=$(echo "$name" | tr -cd '.' | wc -c)
-            if [[ $dot_count -gt 1 ]]; then
-                # 允許 root.*.yaml 和 root.*.yml 和 root.*.map 和 root.*.sh 這類三段式名稱
-                if [[ "$name" =~ ^root\.[a-z][a-z0-9-]*\.(yaml|yml|map|sh)$ ]]; then
-                    : # 允許此格式
-                else
-                    cp_log_error "File has double extension: $name"
-                    return 1
-                fi
+            # 明確禁止雙副檔名封裝
+            if [[ "$name" =~ \.(yaml|yml|json|toml|sh)\.txt$ ]]; then
+                cp_log_error "Forbidden double-extension wrapper (use a single real extension): $name"
+                return 1
             fi
             ;;
             

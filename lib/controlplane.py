@@ -133,21 +133,12 @@ class ControlplaneConfig:
         
         # 根據類型獲取規則
         if name_type == "file":
-            # 特殊處理：允許 root.*.yaml 格式的文件
-            if name.startswith("root.") and name.count('.') == 2:
-                parts = name.split('.')
-                if len(parts) == 3 and parts[2] in ['yaml', 'yml', 'map', 'sh']:
-                    return True, None
-            
-            pattern = r'^[a-z][a-z0-9-]*(\.[a-z0-9]+)*$'
+            pattern = r'^[a-z][a-z0-9-]*(\.[a-z0-9-]+)*$'
             if not re.match(pattern, name):
-                return False, f"File name must be kebab-case: {name}"
+                return False, f"File name must be kebab-case (dots allowed as segments): {name}"
             
-            # 檢查雙重擴展名（排除已允許的特例）
-            if name.count('.') > 1:
-                # 允許 root.*.(yaml|yml|map|sh) 這類三段式名稱
-                if not (name.startswith("root.") and len(name.split('.')) == 3):
-                    return False, f"File has double extension: {name}"
+            if re.search(r'\.(yaml|yml|json|toml|sh)\.txt$', name):
+                return False, f"Forbidden double-extension wrapper (use a single real extension): {name}"
         
         elif name_type == "directory":
             pattern = r'^[a-z][a-z0-9-]*$'
