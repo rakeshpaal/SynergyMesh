@@ -78,7 +78,7 @@ cp_get_yaml_value() {
     # Python fallback（dot path）
     if command -v python3 >/dev/null 2>&1; then
         python3 - "$yaml_file" "$key_path" "$default_value" <<'PY'
-import sys
+import sys, json
 try:
     import yaml
 except Exception:
@@ -108,7 +108,6 @@ if value is None:
 
 # scalar -> print as is; list/dict -> json string
 if isinstance(value, (dict, list)):
-    import json
     print(json.dumps(value, ensure_ascii=False))
 else:
     print(value)
@@ -196,18 +195,12 @@ cp_validate_name() {
 
                 local allowed="false"
                 if command -v python3 >/dev/null 2>&1; then
-                    allowed="$(python3 - "$name" "$rules_json" <<'PY'
-import sys, json, re
+                    allowed="$(PYTHONPATH="$CP_REPO_ROOT/lib:${PYTHONPATH:-}" python3 - "$name" "$rules_json" <<'PY'
+import sys
+from controlplane import validate_name_allowlist
 name = sys.argv[1]
 raw = sys.argv[2]
-try:
-    rules = json.loads(raw) if raw else []
-except Exception:
-    rules = []
-if not isinstance(rules, list):
-    rules = []
-ok = any(re.match(p, name) for p in rules if isinstance(p, str) and p)
-print("true" if ok else "false")
+print("true" if validate_name_allowlist(name, raw) else "false")
 PY
 )"
                 fi
