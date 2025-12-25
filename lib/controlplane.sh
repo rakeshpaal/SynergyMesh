@@ -60,6 +60,11 @@ cp_get_yaml_value() {
     local key_path="$2"
     local default_value="${3:-}"
     
+    if [[ -z "$yaml_file" || -z "$key_path" ]]; then
+        echo "$default_value"
+        return 1
+    fi
+    
     if [[ ! -f "$yaml_file" ]]; then
         echo "$default_value"
         return 1
@@ -77,12 +82,17 @@ cp_get_yaml_value() {
     
     # 回退到 Python
     if command -v python3 &> /dev/null; then
-        python3 -c "
-import yaml, sys
+        python3 - "$yaml_file" "$key_path" "$default_value" <<'PY'
+import sys
+import yaml
+
 try:
     with open('${yaml_file}', 'r') as f:
         data = yaml.safe_load(f)
     keys = '${key_path}'.split('.')
+    with open(sys.argv[1], 'r') as f:
+        data = yaml.safe_load(f)
+    keys = sys.argv[2].split('.')
     value = data
     for key in keys:
         if isinstance(value, dict):
@@ -94,6 +104,10 @@ try:
 except:
     print('${default_value}')
 "
+    print(value if value is not None else sys.argv[3])
+except Exception:
+    print(sys.argv[3])
+PY
         return 0
     fi
     
