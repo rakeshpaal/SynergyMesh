@@ -62,6 +62,7 @@ jobs:
       - name: Upload enhanced validation artifacts
         if: always()
         uses: actions/upload-artifact@65c4c4a1ddee5b72f698f16bbc0672140a2c0c5e
+        uses: actions/upload-artifact@v6
         with:
           name: enhanced-validation-report
           path: |
@@ -76,6 +77,7 @@ jobs:
       - name: Comment enhanced validation result on PR
         if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');
