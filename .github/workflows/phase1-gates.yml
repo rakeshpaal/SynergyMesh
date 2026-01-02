@@ -1,4 +1,4 @@
-name: aaps-phase1-gates
+name: 🚪 Phase 1 Gates
 on:
   pull_request:
     branches: [main, develop]

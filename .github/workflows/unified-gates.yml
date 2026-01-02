@@ -1,4 +1,4 @@
-name: AAPS Unified Gates v2
+name: 🚪 Unified Gates v2
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - root/**
       - engine/**
       - agents/**
-      - .github/workflows/aaps-unified-gates.yml
+      - .github/workflows/unified-gates.yml
 
 permissions:
   contents: read
@@ -33,5 +33,5 @@ jobs:
 
       - name: Summarize
         run: |
-          echo "## AAPS unified gate" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Unified Gate" >> "$GITHUB_STEP_SUMMARY"
           echo "- Validation: completed" >> "$GITHUB_STEP_SUMMARY"
