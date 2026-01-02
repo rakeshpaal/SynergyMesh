@@ -206,17 +206,17 @@ def main() -> None:
     
     # 驗證並解析端口
     try:
-        port = int(os.environ.get('DASHBOARD_PORT', str(DEFAULT_PORT)))
+        port = int(os.environ.get('DASHBOARD_PORT', DEFAULT_PORT))
         if not (1 <= port <= 65535):
             print(f"⚠️  警告：端口 {port} 超出有效範圍 (1-65535)，使用預設值 {DEFAULT_PORT}")
             port = DEFAULT_PORT
-    except ValueError:
+    except (ValueError, TypeError):
         print(f"⚠️  警告：無效的 DASHBOARD_PORT 值，使用預設值 {DEFAULT_PORT}")
         port = DEFAULT_PORT
     
     # 安全警告（在啟動服務器之前顯示）
-    if host == '0.0.0.0':
-        print("⚠️  警告：服務器將監聽所有網絡接口，請確保在安全環境中運行")
+    if host not in ('127.0.0.1', 'localhost'):
+        print("⚠️  警告：服務器將監聽外部網絡接口，請確保在安全環境中運行")
     
     # 啟動服務器
     print("🚀 啟動高階代碼掃描儀表板...")
