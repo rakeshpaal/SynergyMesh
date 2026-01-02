@@ -131,8 +131,18 @@ def findings():
 @app.route('/api/reports/<filename>')
 def download_report(filename):
     """下載報告"""
-    report_path = REPORTS_DIR / filename
-    
+    # Resolve the requested path and ensure it stays within REPORTS_DIR
+    try:
+        base_path = REPORTS_DIR.resolve()
+        report_path = (REPORTS_DIR / filename).resolve()
+    except OSError:
+        # Invalid path (e.g., contains characters not allowed by the OS)
+        return jsonify({'error': 'Report not found'}), 404
+
+    # Prevent directory traversal by ensuring the resolved path is under REPORTS_DIR
+    if base_path != report_path and base_path not in report_path.parents:
+        return jsonify({'error': 'Report not found'}), 404
+
     if report_path.exists():
         return send_file(report_path, as_attachment=True)
     
