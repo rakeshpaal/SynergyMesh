@@ -131,7 +131,7 @@ def findings():
 
 @app.route('/api/reports/<filename>')
 def download_report(filename):
-    """下載報告"""
+    """下載報告 / Download report"""
     # Sanitize the filename to prevent path traversal attacks
     # This removes any directory components and dangerous characters
     safe_filename = secure_filename(filename)
@@ -149,16 +149,19 @@ def download_report(filename):
         resolved_path = report_path.resolve()
         
         # Check that the resolved path is under the base directory
-        if base_path not in resolved_path.parents and base_path != resolved_path:
+        # Using relative_to() which raises ValueError if path is outside base
+        resolved_path.relative_to(base_path)
+        
+        # Ensure it's not the base directory itself and is a file
+        if resolved_path == base_path or not resolved_path.is_file():
             return jsonify({'error': 'Report not found'}), 404
+            
     except (OSError, ValueError):
+        # Invalid path or path outside base directory
         return jsonify({'error': 'Invalid path'}), 400
     
-    # Check if the file exists and return it
-    if resolved_path.exists() and resolved_path.is_file():
-        return send_file(resolved_path, as_attachment=True)
-    
-    return jsonify({'error': 'Report not found'}), 404
+    # Return the safe file
+    return send_file(resolved_path, as_attachment=True)
 
 @app.route('/dashboard')
 def dashboard():
