@@ -717,7 +717,7 @@ Examples:
         
         # Check for incorrect certificate paths
         incorrect_paths = [
-            r'/etc/machine-native-ops',
+            r'/etc/aaps',
             r'/etc/machine-native-ops',
             r'/etc/apps',
         ]
