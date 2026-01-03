@@ -177,9 +177,26 @@ class AdvancedCodeScanner:
             "token": ["token", "access_token", "auth_token"]
         }
         
+        # Test file patterns to filter out
+        test_file_patterns = [
+            "/test/", "/tests/", "/test_", "_test.py",
+            "/example/", "/examples/", "/demo/", "/demos/",
+            "/mock/", "/mocks/", "/fixture/", "/fixtures/"
+        ]
+        
+        # Placeholder patterns that indicate non-real credentials
+        placeholder_patterns = [
+            "todo", "replace", "change", "example", "sample",
+            "placeholder", "your_", "my_", "xxx", "yyy",
+            "test", "dummy", "fake", "mock", "<", ">"
+        ]
+        
         python_files = list(self.repo_path.rglob("*.py"))
         
         for file_path in python_files:
+            # Skip test files and example files
+            file_path_str = str(file_path).lower()
+            if any(pattern in file_path_str for pattern in test_file_patterns):
             # 跳過測試/示例代碼文件
             if any(marker in str(file_path).lower() for marker in ['test', 'example', 'demo', 'sample']):
                 continue
@@ -200,6 +217,14 @@ class AdvancedCodeScanner:
                     if line_stripped.startswith("#"):
                         continue
                     
+                    # Skip comment lines (both full-line and inline comments)
+                    stripped_line = line.strip()
+                    if stripped_line.startswith("#"):
+                        continue
+                    
+                    # Remove inline comments for analysis
+                    code_part = line.split('#')[0] if '#' in line else line
+                    code_part_lower = code_part.lower()
                     # Skip comments
                     stripped = line.strip()
                     if stripped.startswith("#"):
@@ -212,6 +237,54 @@ class AdvancedCodeScanner:
                     # 檢查硬編碼憑證
                     for key_type, keywords in patterns.items():
                         for keyword in keywords:
+                            # Check for both assignment and dictionary patterns
+                            has_assignment = f"{keyword} = " in code_part_lower
+                            has_dict_double_quotes = f'"{keyword}": ' in code_part_lower
+                            has_dict_single_quotes = f"'{keyword}': " in code_part_lower
+                            
+                            if has_assignment or has_dict_double_quotes or has_dict_single_quotes:
+                                # Must have quotes to be a potential hardcoded credential
+                                if not any(c in code_part for c in ['"', "'"]):
+                                    continue
+                                
+                                # Extract the value part based on pattern type
+                                if has_assignment and '=' in code_part:
+                                    value_part = code_part.split('=', 1)[1].strip()
+                                elif (has_dict_double_quotes or has_dict_single_quotes) and ':' in code_part:
+                                    value_part = code_part.split(':', 1)[1].strip()
+                                else:
+                                    continue
+                                
+                                value_part_lower = value_part.lower()
+                                
+                                # Filter out false positives
+                                # 1. Empty strings or null values
+                                # Check if value is empty quotes or None/null
+                                stripped_value = value_part.strip().strip('"').strip("'").strip()
+                                if not stripped_value or stripped_value.lower() in ['none', 'null']:
+                                    continue
+                                
+                                # 2. Environment variable references
+                                if any(env_ref in value_part for env_ref in ['os.getenv', 'os.environ', 'env.get', 'ENV["', "ENV['"]):
+                                    continue
+                                
+                                # 3. Placeholder values
+                                if any(placeholder in value_part_lower for placeholder in placeholder_patterns):
+                                    continue
+                                
+                                findings.append({
+                                    "severity": "high",
+                                    "type": "Hardcoded Credential",
+                                    "location": f"{file_path}:{line_num}",
+                                    "file_path": str(file_path),
+                                    "line_number": line_num,
+                                    "code_snippet": line.strip(),
+                                    "cwe_id": "CWE-798",
+                                    "description": f"檢測到可能的硬編碼 {key_type}",
+                                    "recommendation": "使用環境變量或密鑰管理服務存儲敏感信息",
+                                    "tool": "custom",
+                                    "confidence": 0.7
+                                })
                             # 檢查變量賦值或字典鍵
                             if (f"{keyword} = " in line_lower or f'"{keyword}": ' in line_lower or 
                                 f"'{keyword}': " in line_lower or f"{keyword}=" in line_lower):
