@@ -90,7 +90,8 @@ class HardcodedPasswordFixer(VulnerabilityFixer):
                 # 檢查是否需要導入 os
                 needs_import = True
                 for line in lines[:line_num]:
-                    if 'import os' in line:
+                    # 使用正則表達式精確匹配 import os，避免誤匹配註釋或字符串
+                    if re.search(r'\bimport\s+os\b', line) or re.search(r'\bfrom\s+os\b', line):
                         needs_import = False
                         break
                 
@@ -107,15 +108,18 @@ class HardcodedPasswordFixer(VulnerabilityFixer):
                         line = lines[insert_pos].lstrip()
                         if line.startswith(('"""', "'''")):
                             docstring_delim = line[:3]
-                            if line.count(docstring_delim) >= 2:
+                            # 檢查是否為單行 docstring（分隔符在同一行中出現至少兩次）
+                            rest_of_line = line[3:]  # 移除開頭的分隔符
+                            if docstring_delim in rest_of_line:
                                 # 單行 docstring
                                 insert_pos += 1
                             else:
-                                # 多行 docstring
+                                # 多行 docstring - 尋找行首的結束分隔符
                                 insert_pos += 1
-                                while insert_pos < len(lines) and docstring_delim not in lines[insert_pos]:
-                                    insert_pos += 1
-                                if insert_pos < len(lines):
+                                while insert_pos < len(lines):
+                                    if lines[insert_pos].lstrip().startswith(docstring_delim):
+                                        insert_pos += 1
+                                        break
                                     insert_pos += 1
                     
                     # 跳過 from __future__ imports
@@ -130,8 +134,8 @@ class HardcodedPasswordFixer(VulnerabilityFixer):
                     for i in range(insert_pos, len(lines)):
                         stripped = lines[i].lstrip()
                         if stripped.startswith('import ') or stripped.startswith('from '):
-                            # 檢查是否已經有 import os
-                            if stripped.startswith(('import os', 'from os ')):
+                            # 檢查是否已經有 import os（包括各種形式）
+                            if re.search(r'\bimport\s+os\b', stripped) or re.search(r'\bfrom\s+os\b', stripped):
                                 # os 已經導入，不需要再添加
                                 needs_import = False
                                 break
@@ -141,7 +145,7 @@ class HardcodedPasswordFixer(VulnerabilityFixer):
                             # 繼續掃描標準庫導入
                             # 簡單啟發式：標準庫通常是單個單詞（os, sys, re 等）
                             # 第三方庫通常有下劃線或多個單詞
-                            import_match = re.match(r'(?:import|from)\s+([a-z_]+)', stripped)
+                            import_match = re.match(r'(?:import|from)\s+([a-zA-Z_][a-zA-Z0-9_]*)', stripped)
                             if import_match:
                                 module_name = import_match.group(1)
                                 # 常見標準庫模組名
