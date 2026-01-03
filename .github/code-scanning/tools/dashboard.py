@@ -19,8 +19,6 @@ import secrets
 from datetime import datetime
 from typing import Dict
 
-app = Flask(__name__)
-
 # 配置
 REPORTS_DIR = Path(".github/code-scanning/reports")
 TEMPLATE_DIR = Path(".github/code-scanning/templates")
@@ -32,6 +30,8 @@ app = Flask(__name__, template_folder=str(TEMPLATE_DIR))
 
 # 安全配置：從環境變量讀取 SECRET_KEY 或生成隨機密鑰
 # Security configuration: Load SECRET_KEY from environment or generate random key
+# WARNING: If FLASK_SECRET_KEY is not set, a random key is generated on each restart,
+# which will invalidate existing sessions. Always set FLASK_SECRET_KEY in production.
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY') or secrets.token_hex(32)
 
 class DashboardData:
