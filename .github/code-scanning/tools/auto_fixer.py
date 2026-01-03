@@ -549,6 +549,7 @@ def main() -> None:
     else:
         fixer.auto_fix_all(scan_results)
         print(json.dumps(fixer.fix_report, ensure_ascii=False, indent=2))
+        print(json.dumps(report, ensure_ascii=False, indent=2))
 
 if __name__ == "__main__":
     main()

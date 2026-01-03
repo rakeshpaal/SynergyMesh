@@ -265,6 +265,20 @@ class AdvancedCodeScanner:
             
             except (IOError, OSError, UnicodeDecodeError) as e:
                 print(f"  ⚠️ 讀取 {req_file} 時發生錯誤: {e}")
+            except FileNotFoundError as e:
+                print(f"  ⚠️ 找不到依賴文件 {req_file}: {e}")
+                continue
+            except PermissionError as e:
+                print(f"  ⚠️ 沒有權限讀取依賴文件 {req_file}: {e}")
+                continue
+            except UnicodeDecodeError as e:
+                print(f"  ⚠️ 依賴文件 {req_file} 包含無效的編碼: {e}")
+                continue
+            except OSError as e:
+                print(f"  ⚠️ 訪問依賴文件 {req_file} 時發生系統錯誤: {e}")
+                continue
+            except Exception as e:
+                print(f"  ⚠️ 處理依賴文件 {req_file} 時發生未預期錯誤: {e}")
                 continue
         
         return findings
