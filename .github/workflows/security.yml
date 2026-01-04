@@ -67,8 +67,8 @@ jobs:
           patterns=(
             '[Aa][Ww][Ss][_-]?[Aa][Cc][Cc][Ee][Ss][Ss][_-]?[Kk][Ee][Yy][_-]?[Ii][Dd]'
             '[Aa][Ww][Ss][_-]?[Ss][Ee][Cc][Rr][Ee][Tt][_-]?[Aa][Cc][Cc][Ee][Ss][Ss][_-]?[Kk][Ee][Yy]'
-            'ghp_[A-Za-z0-9]{36}'
-            'github_pat_[A-Za-z0-9_]{80,}'
+            '[Gg][Hh][Pp]_[A-Za-z0-9]{36}'
+            '[Gg][Ii][Tt][Hh][Uu][Bb]_[Pp][Aa][Tt]_[A-Za-z0-9_]{80,}'
             '[Aa][Pp][Ii][_-]?[Kk][Ee][Yy]'
             '[Ss][Ee][Cc][Rr][Ee][Tt][_-]?[Kk][Ee][Yy]'
             '[Pp][Rr][Ii][Vv][Aa][Tt][Ee][_-]?[Kk][Ee][Yy]'
