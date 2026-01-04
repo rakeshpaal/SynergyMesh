@@ -38,7 +38,15 @@ def normalize_physical_path(physical_path: str) -> str:
     Example:
         normalize_physical_path("./") -> "."
     """
-    normalized = physical_path.lstrip('./')
+    normalized = physical_path.strip()
+
+    if normalized in {'', '.', './'}:
+        return '.'
+
+    if normalized.startswith('./'):
+        normalized = normalized[2:]
+
+    normalized = normalized.lstrip('/')
     return normalized or '.'
 
 # =============================================================================
@@ -112,12 +120,24 @@ class FsMapEntry:
 
 
 def get_mapped_directories(generated_maps: Dict[str, List["FsMapEntry"]]) -> Set[str]:
-    """Return normalized mapped directory paths from generated maps."""
+    """Return normalized, deduplicated directory paths from generated maps.
+
+    Example:
+        ["./a", "./a", "./b"] -> {"a", "b"}
+    """
     return {
         normalize_physical_path(entry.physical_path)
         for entries in generated_maps.values()
         for entry in entries
     }
+
+
+def compute_coverage_percentage(total_dirs: int, mapped_dirs: Set[str]) -> float:
+    """Compute coverage percentage using a shared calculation."""
+    if total_dirs == 0:
+        return 100.0
+
+    return round((len(mapped_dirs) / total_dirs) * 100, 2)
 
 
 # =============================================================================
@@ -409,10 +429,7 @@ class IndexUpdater:
 
         mapped_dirs = get_mapped_directories(generated_maps)
 
-        if total_dirs == 0:
-            return 100.0
-
-        return round((len(mapped_dirs) / total_dirs) * 100, 2)
+        return compute_coverage_percentage(total_dirs, mapped_dirs)
 
 
 # =============================================================================
@@ -697,7 +714,7 @@ class ReportGenerator:
         module_boundaries = len([d for d in scanner.directories.values() if d.is_module_boundary])
         total_mappings = sum(len(entries) for entries in generator.generated_maps.values())
         mapped_dirs = get_mapped_directories(generator.generated_maps)
-        coverage_percentage = round((len(mapped_dirs) / total_dirs * 100) if total_dirs else 0, 2)
+        coverage_percentage = compute_coverage_percentage(total_dirs, mapped_dirs)
 
         report = f"""# Filesystem Mapping Report
 # Generated: {timestamp}
