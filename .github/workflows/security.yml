@@ -73,11 +73,11 @@ jobs:
           
           # Lower-confidence patterns that should warn but not fail
           warning_patterns=(
-            '[Aa][Ww][Ss]([_-]?[Aa][Cc][Cc][Ee][Ss][Ss])?([_-]?[Kk][Ee][Yy])?([_-]?[Ii][Dd])?'
-            '[Aa][Ww][Ss]([_-]?[Ss][Ee][Cc][Rr][Ee][Tt])?([_-]?[Aa][Cc][Cc][Ee][Ss][Ss])?([_-]?[Kk][Ee][Yy])?'
-            '[Aa][Pp][Ii]([_-]?[Kk][Ee][Yy])?'
-            '[Ss][Ee][Cc][Rr][Ee][Tt]([_-]?[Kk][Ee][Yy])?'
-            '[Pp][Rr][Ii][Vv][Aa][Tt][Ee]([_-]?[Kk][Ee][Yy])?'
+            '[Aa][Ww][Ss][_-]([Aa][Cc][Cc][Ee][Ss][Ss][_-])?[Kk][Ee][Yy]([_-][Ii][Dd])?'
+            '[Aa][Ww][Ss][_-][Ss][Ee][Cc][Rr][Ee][Tt]([_-][Aa][Cc][Cc][Ee][Ss][Ss])?[_-][Kk][Ee][Yy]'
+            '[Aa][Pp][Ii][_-][Kk][Ee][Yy]'
+            '[Ss][Ee][Cc][Rr][Ee][Tt][_-][Kk][Ee][Yy]'
+            '[Pp][Rr][Ii][Vv][Aa][Tt][Ee][_-][Kk][Ee][Yy]'
             'xox[baprs]-[A-Za-z0-9-]{10,}'
           )
           
